@@ -3,6 +3,7 @@ import GuestLayout from "../../layouts/GuestLayout";
 import Card from "../../components/Card";
 import RandomImg from "../../assets/random-img.jpg";
 import FilterSection from "../../components/FIlterSection";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   // Dummy data array
@@ -65,9 +66,9 @@ const Home = () => {
         <div className="flex items-center  justify-between">
           <FilterSection />
           <div className="flex items-center gap-4">
-            <button className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl">
+            <Link to='/create-listing' className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl">
               + ლისტინგის დამატება
-            </button>
+            </Link>
             <button className=" text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl">
               + აგენტის დამატება
             </button>
