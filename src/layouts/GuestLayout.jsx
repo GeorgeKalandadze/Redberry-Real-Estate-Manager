@@ -7,7 +7,7 @@ const GuestLayout = ({ children }) => {
       <div className="px-[142px] border-b border-[#DBDBDB] py-[38px]">
         <img src={RedberryIcon} alt="Redberry Logo" />
       </div>
-      <div className="px-[142px] py-[38px]">{children}</div>
+      <div className="px-[142px] py-[38px] w-full">{children}</div>
     </div>
   );
 };
