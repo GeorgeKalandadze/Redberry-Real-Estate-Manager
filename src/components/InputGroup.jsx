@@ -2,11 +2,11 @@ import React from 'react'
 
 const InputGroup = () => {
   return (
-    <div className="w-full flex flex-col gap-3">
+    <div className="w-full flex flex-col gap-1">
       <label className="font-bold text-[14px]">მისამართი *</label>
       <input
         type="text"
-        className="w-full rounded-md  border-[2px] border-gray-400 outline-none py-2 px-2"
+        className="w-full rounded-md  border-[2px] border-[#c3c2c8] outline-none py-2 px-2"
       />
       <div className="flex items-center gap-3">
         <svg

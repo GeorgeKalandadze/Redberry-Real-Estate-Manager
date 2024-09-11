@@ -3,7 +3,7 @@ import LocationIcon from "../assets/location.png";
 import BedIcon from "../assets/bed.png";
 import MailIndexIcon from "../assets/mail-index.png";
 import SpaceIcon from "../assets/space.png";
-import ArrowDownIcon from '../assets/arrow-down.png'
+
 const Card = ({ image, price, address, beds, area, mailIndex, label }) => {
   return (
     <div className="border rounded-lg overflow-hidden shadow-lg min-w-full">
