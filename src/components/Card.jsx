@@ -3,12 +3,17 @@ import LocationIcon from "../assets/location.png";
 import BedIcon from "../assets/bed.png";
 import MailIndexIcon from "../assets/mail-index.png";
 import SpaceIcon from "../assets/space.png";
-
+import ArrowDownIcon from '../assets/arrow-down.png'
 const Card = ({ image, price, address, beds, area, mailIndex, label }) => {
   return (
     <div className="border rounded-lg overflow-hidden shadow-lg min-w-full">
+      
       <div className="relative">
-        <img src={image} alt="Property" className="w-full h-[300px] object-cover" />
+        <img
+          src={image}
+          alt="Property"
+          className="w-full h-[300px] object-cover"
+        />
         {label && (
           <span className="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-sm px-2 py-1 rounded-2xl">
             {label}

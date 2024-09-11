@@ -2,6 +2,7 @@ import React from "react";
 import GuestLayout from "../../layouts/GuestLayout";
 import Card from "../../components/Card";
 import RandomImg from "../../assets/random-img.jpg";
+import FilterSection from "../../components/FIlterSection";
 
 const Home = () => {
   // Dummy data array
@@ -60,19 +61,33 @@ const Home = () => {
 
   return (
     <GuestLayout>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {properties.map((property) => (
-          <Card
-            key={property.id}
-            image={property.image}
-            price={property.price}
-            address={property.address}
-            beds={property.beds}
-            area={property.area}
-            mailIndex={property.mailIndex}
-            label={property.label}
-          />
-        ))}
+      <div className="w-full flex flex-col gap-4">
+        <div className="flex items-center  justify-between">
+          <FilterSection />
+          <div className="flex items-center gap-4">
+            <button className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl">
+              + ლისტინგის დამატება
+            </button>
+            <button className=" text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl">
+              + აგენტის დამატება
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {properties.map((property) => (
+            <Card
+              key={property.id}
+              image={property.image}
+              price={property.price}
+              address={property.address}
+              beds={property.beds}
+              area={property.area}
+              mailIndex={property.mailIndex}
+              label={property.label}
+            />
+          ))}
+        </div>
       </div>
     </GuestLayout>
   );
