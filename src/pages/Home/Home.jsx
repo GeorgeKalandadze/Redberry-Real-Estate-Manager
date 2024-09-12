@@ -19,7 +19,7 @@ const Home = () => {
       area: 55,
       mailIndex: 160,
       label: "ქირავდება",
-      image: RandomImg, // Using the same image for all cards for now
+      image: RandomImg,
     },
     {
       id: 2,

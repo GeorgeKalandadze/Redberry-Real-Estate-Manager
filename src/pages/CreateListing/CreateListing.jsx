@@ -30,9 +30,17 @@ const CreateListing = () => {
   const handleAgentChange = (agent) => {
     const updatedListing = {
       ...listing,
-      agent_id: agent, // Bind the agent's ID
+      agent_id: agent,
     };
+
     setListing(updatedListing);
+
+    const errors = ValidateListing(updatedListing);
+
+    setValidationErrors((prevErrors) => ({
+      ...prevErrors,
+      agent_id: errors.agent_id,
+    }));
   };
 
 
@@ -56,6 +64,7 @@ const CreateListing = () => {
     formData.append("bedrooms", listing.bedrooms);
     formData.append("description", listing.description);
     formData.append("agent_id", listing.agent_id.value);
+    formData.append("is_rental", listing.is_rental);
 
     if (listing?.image?.url) {
       const response = await fetch(listing.image.url);

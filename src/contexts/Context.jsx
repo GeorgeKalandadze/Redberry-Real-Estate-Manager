@@ -33,6 +33,7 @@ export const AppProvider = ({ children }) => {
   const [agents, setAgents] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
+  const [isAgentModalOpen, setIsAgentModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchRegions = async () => {
@@ -191,6 +192,8 @@ export const AppProvider = ({ children }) => {
         agents,
         setListing,
         handleRadioChange,
+        isAgentModalOpen,
+        setIsAgentModalOpen,
       }}
     >
       {children}
