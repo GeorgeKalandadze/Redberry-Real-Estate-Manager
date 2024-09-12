@@ -13,11 +13,14 @@ import EmailIcon from "../../assets/email.png";
 import PhoneIcon from "../../assets/phone.png";
 import Card from "../../components/Card";
 import ArrowIcon from "../../assets/arrow-icon.png"; // Assuming this is the arrow icon you want to use.
+import DeleteListingModal from "../../components/DeleteListingModal";
 
 const Listing = () => {
   const [swiper, setSwiper] = useState(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const goToNextSlide = () => {
     if (swiper !== null) {
@@ -100,6 +103,14 @@ const Listing = () => {
     },
   ];
 
+
+
+  const handleDelete = () => {
+    // Handle delete logic here
+    console.log("Listing deleted");
+    setIsModalOpen(false); // Close modal after deletion
+  };
+
   return (
     <GuestLayout>
       <div className="flex flex-col justify-center py-12">
@@ -180,7 +191,10 @@ const Listing = () => {
               </div>
             </div>
             <div className="flex justify-left">
-              <button className="text-[#676E76] font-bold border-[2px] border-[#676E76]  px-6 py-3 rounded-xl">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="text-[#676E76] font-bold border-[2px] border-[#676E76]  px-6 py-3 rounded-xl"
+              >
                 ლისტინგის წაშლა
               </button>
             </div>
@@ -247,6 +261,11 @@ const Listing = () => {
           </div>
         </div>
       </div>
+      <DeleteListingModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onDelete={handleDelete}
+      />
     </GuestLayout>
   );
 };
