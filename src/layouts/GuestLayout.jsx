@@ -1,14 +1,21 @@
 import React from "react";
 import RedberryIcon from "../assets/redberry-logo.png";
+import { Link } from "react-router-dom";
+import AgentModal from "../components/AgentMoadal";
 
 const GuestLayout = ({ children }) => {
   return (
-    <div className="max-w-[1920px] min-h-[1080px] bg-[#FFFFFF] flex flex-col">
-      <div className="px-[142px] border-b border-[#DBDBDB] py-[38px]">
-        <img src={RedberryIcon} alt="Redberry Logo" />
+    <>
+    <AgentModal/>
+      <div className="max-w-[1920px] min-h-[1080px] bg-[#FFFFFF] flex flex-col">
+        <div className="px-[142px] border-b border-[#DBDBDB] py-[38px]">
+          <Link to="/">
+            <img src={RedberryIcon} alt="Redberry Logo" />
+          </Link>
+        </div>
+        <div className="px-[142px] py-[38px] w-full">{children}</div>
       </div>
-      <div className="px-[142px] py-[38px] w-full">{children}</div>
-    </div>
+    </>
   );
 };
 

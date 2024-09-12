@@ -4,8 +4,11 @@ import Card from "../../components/Card";
 import RandomImg from "../../assets/random-img.jpg";
 import FilterSection from "../../components/FIlterSection";
 import { Link } from "react-router-dom";
+import { useGlobalContext } from "../../contexts/Context";
+
 
 const Home = () => {
+  const { setIsAgentModalOpen } = useGlobalContext();
   // Dummy data array
   const properties = [
     {
@@ -69,7 +72,7 @@ const Home = () => {
             <Link to='/create-listing' className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl">
               + ლისტინგის დამატება
             </Link>
-            <button className=" text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl">
+            <button onClick={() => setIsAgentModalOpen(true)} className=" text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl">
               + აგენტის დამატება
             </button>
           </div>
