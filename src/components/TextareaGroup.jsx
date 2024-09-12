@@ -1,13 +1,13 @@
-import React from 'react'
+import React from "react";
 
-const InputGroup = ({label, type, hint, name}) => {
+const TextareaGroup = ({ label, hint, name, rows = 4 }) => {
   return (
     <div className="w-full flex flex-col gap-1">
       <label className="font-bold text-[14px]">{label}*</label>
-      <input
-        type={type}
-        className="w-full rounded-md  border-[2px] border-[#c3c2c8] outline-none py-2 px-2"
+      <textarea
         name={name}
+        rows={rows}
+        className="w-full rounded-md border-[2px] border-[#c3c2c8] outline-none py-2 px-2 resize-none"
       />
       <div className="flex items-center gap-3">
         <svg
@@ -20,15 +20,15 @@ const InputGroup = ({label, type, hint, name}) => {
         >
           <path
             d="M11 1.40918L4.125 9.591L1 5.87199"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
-        <p className='font-medium text-[14px]"'>{hint}</p>
+        <p className="font-medium text-[14px]">{hint}</p>
       </div>
     </div>
   );
-}
+};
 
-export default InputGroup
+export default TextareaGroup;
