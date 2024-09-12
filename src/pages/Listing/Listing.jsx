@@ -12,10 +12,11 @@ import SpaceIcon from "../../assets/space.png";
 import EmailIcon from "../../assets/email.png";
 import PhoneIcon from "../../assets/phone.png";
 import Card from "../../components/Card";
-import ArrowIcon from "../../assets/arrow-icon.png"; // Assuming this is the arrow icon you want to use.
+import ArrowIcon from "../../assets/arrow-icon.png";
 import DeleteListingModal from "../../components/DeleteListingModal";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../config/axiosClient";
+import { useGlobalContext } from "../../contexts/Context";
 
 const Listing = () => {
   const { id } = useParams();
@@ -24,6 +25,9 @@ const Listing = () => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const { setRealEstateList, realEstateList, fetchRealEstateList } =
+    useGlobalContext();
 
   useEffect(() => {
     const fetchListingDetails = async () => {
@@ -37,6 +41,30 @@ const Listing = () => {
 
     fetchListingDetails();
   }, [id]);
+
+  
+
+  const handleDeleteRealEstate = async (id) => {
+    try {
+      const response = await axiosClient.delete(`/real-estates/${id}`);
+      if (response.status === 200) {
+        // const updatedList = realEstateList.filter((item) => item.id !== id);
+        // setRealEstateList([...updatedList]);
+        fetchRealEstateList();
+        navigate("/"); 
+      }
+    } catch (error) {
+      console.error(
+        "Error deleting real estate:",
+        error.response?.data || error
+      );
+    }
+  };
+
+   const updatedList = realEstateList.filter((item) => item.id !== id);
+   console.log("updated list", updatedList);
+   
+
 
   const goToNextSlide = () => {
     if (swiper !== null) {
@@ -117,10 +145,6 @@ const Listing = () => {
       image: RandomImg,
     },
   ];
-
-  const handleDelete = () => {
-    setIsModalOpen(false);
-  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -285,7 +309,7 @@ const Listing = () => {
       <DeleteListingModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onDelete={handleDelete}
+        onDelete={() => handleDeleteRealEstate(id)}
       />
     </GuestLayout>
   );

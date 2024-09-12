@@ -33,7 +33,7 @@ const DeleteListingModal = ({ isOpen, onClose, onDelete }) => {
           >
             გაუქმება
           </button>
-          <button className="bg-[#F93B1D] text-white text-[16px] font-medium px-4 py-2 rounded-xl">
+          <button onClick={onDelete} className="bg-[#F93B1D] text-white text-[16px] font-medium px-4 py-2 rounded-xl">
             დადასტურება
           </button>
         </div>

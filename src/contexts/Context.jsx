@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useSessionStorage } from "../hooks/useSessionStorage";
 import { ValidateListing } from "../validation/validation";
 import axiosClient from "../config/axiosClient";
+import { useNavigate } from "react-router-dom";
 
 const initialListingInfo = {
   address: "",
@@ -198,12 +199,13 @@ export const AppProvider = ({ children }) => {
       [name]: errors[name],
     }));
   };
+  
 
   return (
     <AppContext.Provider
       value={{
         listing,
-        agent, // Include agent in the provider
+        agent,
         validationErrors,
         setValidationErrors,
         handleInputChange,
@@ -217,13 +219,14 @@ export const AppProvider = ({ children }) => {
         cities,
         agents,
         setListing,
-        setAgent, 
+        setAgent,
         handleRadioChange,
         isAgentModalOpen,
         setIsAgentModalOpen,
+        setRealEstateList,
         realEstateList,
         fetchRealEstateList,
-        fetchAgents
+        fetchAgents,
       }}
     >
       {children}

@@ -80,18 +80,18 @@ const CreateListing = () => {
       });
 
 
-      setListing({
-        address: "",
-        zip_code: "",
-        region_id: null,
-        city_id: null,
-        price: "",
-        area: "",
-        bedrooms: "",
-        description: "",
-        image: {},
-        agent_id: null,
-      });
+      // setListing({
+      //   address: "",
+      //   zip_code: "",
+      //   region_id: null,
+      //   city_id: null,
+      //   price: "",
+      //   area: "",
+      //   bedrooms: "",
+      //   description: "",
+      //   image: {},
+      //   agent_id: null,
+      // });
 
       setValidationErrors({});
       fetchRealEstateList();

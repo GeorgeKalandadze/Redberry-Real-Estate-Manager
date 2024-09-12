@@ -9,6 +9,8 @@ import { useGlobalContext } from "../../contexts/Context";
 const Home = () => {
   const { setIsAgentModalOpen, realEstateList } = useGlobalContext();
    
+  console.log(realEstateList);
+  
   return (
     <GuestLayout>
       <div className="w-full flex flex-col gap-4">
