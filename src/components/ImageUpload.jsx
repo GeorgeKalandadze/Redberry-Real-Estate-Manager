@@ -16,13 +16,16 @@ const ImageUpload = ({ label, isValid, handleChange, values, handleImageDelete }
   //     ? "bg-[#FAF2F3]"
   //     : "";
 
+
+  
+
   return (
     <div className="w-full flex flex-col gap-2">
       <label className="font-bold text-[14px]">{label}*</label>
       <div
         className={`w-full h-[150px] ${borderColor}  border-dashed border-2 rounded-lg flex items-center justify-center relative`}
       >
-        {!values.image?.url ? (
+        {!values ? (
           <>
             <label
               htmlFor="file-upload"
@@ -43,7 +46,7 @@ const ImageUpload = ({ label, isValid, handleChange, values, handleImageDelete }
         ) : (
           <div className="relative">
             <img
-              src={values.image?.url}
+              src={values}
               alt="Uploaded"
               className="w-[92px] h-[82px] object-cover rounded-lg"
             />

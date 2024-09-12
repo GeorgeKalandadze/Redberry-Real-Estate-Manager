@@ -6,34 +6,31 @@ import CustomRadio from "../../components/CustomRadio";
 import TextareaGroup from "../../components/TextareaGroup";
 import ImageUpload from "../../components/ImageUpload";
 import { useGlobalContext } from "../../contexts/Context";
+import { ValidateListing } from "../../validation/validation";
 
 const CreateListing = () => {
   const {
     listing,
+    setListing,
     regions,
-    handleTextInputChange,
+    handleInputChange,
     handleRegionChange,
     filteredCities,
     selectedRegion,
     handleCityChange,
     validationErrors,
-    handleImageUpload, 
+    handleImageUpload,
     handleImageDelete,
   } = useGlobalContext();
 
   const [selectedCardType, setSelectedCardType] = useState("");
-
-
-  console.log(validationErrors);
-  
-  
 
   return (
     <GuestLayout>
       <div className="flex justify-center">
         <div className="w-[790px] flex gap-8 flex-col items-center">
           <h1 className="text-[32px] font-bold ">ლისტინგის დამატება</h1>
-          <form className="w-full flex flex-col gap-12" action="">
+          <form className="w-full flex flex-col gap-12">
             <div className="flex flex-col gap-2">
               <h2 className="text-[16px] font-bold">გარიგების ტიპი</h2>
               <CustomRadio
@@ -56,7 +53,9 @@ const CreateListing = () => {
                   hint="მინიმუმ ორი სიმბოლო"
                   name="address"
                   value={listing?.address}
-                  onChange={handleTextInputChange}
+                  onChange={(e) =>
+                    handleInputChange(e, listing, setListing, ValidateListing)
+                  }
                   isValid={validationErrors?.address}
                 />
                 <InputGroup
@@ -65,7 +64,9 @@ const CreateListing = () => {
                   hint="მხოლოდ რიცხვები"
                   name="zip_code"
                   value={listing?.zip_code}
-                  onChange={handleTextInputChange}
+                  onChange={(e) =>
+                    handleInputChange(e, listing, setListing, ValidateListing)
+                  }
                   isValid={validationErrors?.zip_code}
                 />
               </div>
@@ -105,7 +106,9 @@ const CreateListing = () => {
                   hint="მხოლოდ რიცხვები"
                   name="price"
                   value={listing?.price}
-                  onChange={handleTextInputChange}
+                  onChange={(e) =>
+                    handleInputChange(e, listing, setListing, ValidateListing)
+                  }
                   isValid={validationErrors?.price}
                 />
                 <InputGroup
@@ -114,7 +117,9 @@ const CreateListing = () => {
                   hint="მხოლოდ რიცხვები"
                   name="area"
                   value={listing?.area}
-                  onChange={handleTextInputChange}
+                  onChange={(e) =>
+                    handleInputChange(e, listing, setListing, ValidateListing)
+                  }
                   isValid={validationErrors?.area}
                 />
               </div>
@@ -125,7 +130,9 @@ const CreateListing = () => {
                   hint="მინიმუმ ერთი საძინებელი"
                   name="bedrooms"
                   value={listing?.bedrooms}
-                  onChange={handleTextInputChange}
+                  onChange={(e) =>
+                    handleInputChange(e, listing, setListing, ValidateListing)
+                  }
                   isValid={validationErrors?.bedrooms}
                 />
               </div>
@@ -133,16 +140,33 @@ const CreateListing = () => {
                 label="ბინის აღწერა"
                 hint="მინიმუმ ხუთი სიტყვა"
                 name="description"
-                onChange={handleTextInputChange}
+                onChange={(e) =>
+                  handleInputChange(e, listing, setListing, ValidateListing)
+                }
                 value={listing?.description}
                 isValid={validationErrors?.description}
               />
               <ImageUpload
                 label="ატვირთეთ ფოტო "
+                handleChange={(e) =>
+                  handleImageUpload(
+                    e,
+                    listing,
+                    setListing,
+                    ValidateListing,
+                    "image"
+                  )
+                }
+                values={listing?.image?.url}
+                handleImageDelete={() =>
+                  handleImageDelete(
+                    listing,
+                    setListing,
+                    ValidateListing,
+                    "image"
+                  )
+                }
                 isValid={validationErrors?.image}
-                handleChange={handleImageUpload}
-                values={listing}
-                handleImageDelete={handleImageDelete}
               />
             </div>
 
@@ -156,10 +180,17 @@ const CreateListing = () => {
               />
             </div>
             <div className="flex justify-end items-center gap-4">
-              <button className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl">
+              <button
+                type="button"
+                className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl"
+                onClick={() => window.history.back()} // Back navigation for cancel button
+              >
                 გაუქმება
               </button>
-              <button className="text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl">
+              <button
+                type="submit"
+                className="text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl"
+              >
                 დამატება
               </button>
             </div>

@@ -3,11 +3,26 @@ import { motion } from "framer-motion";
 import InputGroup from "./InputGroup";
 import ImageUpload from "./ImageUpload";
 import { useGlobalContext } from "../contexts/Context";
+import { ValidateAgent } from "../validation/validation";
 
 const AgentModal = () => {
-  const { isAgentModalOpen, setIsAgentModalOpen } = useGlobalContext();
+  const {
+    agent, 
+    setAgent,
+    validationErrors,
+    isAgentModalOpen,
+    setIsAgentModalOpen,
+    handleInputChange,
+    handleImageUpload,
+    handleImageDelete,
+  } = useGlobalContext();
 
   if (!isAgentModalOpen) return null;
+
+
+
+  
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -34,12 +49,22 @@ const AgentModal = () => {
                 type="text"
                 hint="მინიმუმ ორი სიმბოლო"
                 name="firstName"
+                value={agent?.firstName}
+                onChange={(e) =>
+                  handleInputChange(e, agent, setAgent, ValidateAgent)
+                }
+                isValid={validationErrors?.firstName} // Validation status
               />
               <InputGroup
                 label="გვარი"
                 type="text"
                 hint="მინიმუმ ორი სიმბოლო"
                 name="lastName"
+                value={agent?.lastName} // Bind the agent values
+                onChange={(e) =>
+                  handleInputChange(e, agent, setAgent, ValidateAgent)
+                }
+                isValid={validationErrors?.lastName} // Validation status
               />
             </div>
             <div className="w-full flex gap-6">
@@ -48,26 +73,51 @@ const AgentModal = () => {
                 type="email"
                 hint="უნდა იყოს ელ.ფოსტის ფორმატი"
                 name="email"
+                value={agent?.email} // Bind the agent values
+                onChange={(e) =>
+                  handleInputChange(e, agent, setAgent, ValidateAgent)
+                }
+                isValid={validationErrors?.email}
               />
               <InputGroup
                 label="ტელეფონის ნომერი"
                 type="text"
                 hint="მინიმუმ 9 სიმბოლო"
                 name="phoneNumber"
+                value={agent?.phoneNumber}
+                onChange={(e) =>
+                  handleInputChange(e, agent, setAgent, ValidateAgent)
+                }
+                isValid={validationErrors?.phoneNumber} // Validation status
               />
             </div>
 
-            <ImageUpload label="ატვირთეთ ფოტო" />
+            <ImageUpload
+              label="ატვირთეთ ფოტო"
+              handleChange={(e) =>
+                handleImageUpload(e, agent, setAgent, ValidateAgent, "avatar")
+              }
+              values={agent?.avatar?.url}
+              handleImageDelete={() =>
+                handleImageDelete(agent, setAgent, ValidateAgent, "avatar")
+              }
+              isValid={validationErrors?.avatar}
+              
+            />
           </div>
 
           <div className="flex justify-end items-center gap-4">
             <button
+              type="button"
               onClick={() => setIsAgentModalOpen(false)}
               className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl"
             >
               გაუქმება
             </button>
-            <button className="text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl">
+            <button
+              type="submit"
+              className="text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl"
+            >
               დაამატე აგენტი
             </button>
           </div>

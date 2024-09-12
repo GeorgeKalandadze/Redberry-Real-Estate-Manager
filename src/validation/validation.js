@@ -104,3 +104,72 @@ export const ValidateListing = (values) => {
 
   return response;
 };
+
+
+export const ValidateAgent = (values) => {
+  const response = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    image: {
+      size: "",
+      type: "",
+    },
+  };
+
+  const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const REGEX_PHONE = /^5[0-9]{8}$/;
+  const REGEX_IMAGE = /\.(jpeg|jpg|png)$/i;
+
+  // Validate first name
+  if (!values?.firstName || values?.firstName.trim().length < 2) {
+    response.firstName = "invalid";
+  } else {
+    response.firstName = "valid";
+  }
+
+  // Validate last name
+  if (!values?.lastName || values?.lastName.trim().length < 2) {
+    response.lastName = "invalid";
+  } else {
+    response.lastName = "valid";
+  }
+
+  // Validate email
+  if (!values?.email || !REGEX_EMAIL.test(values.email)) {
+    response.email = "invalid";
+  } else {
+    response.email = "valid";
+  }
+
+  // Validate phone number
+  if (!values?.phoneNumber || !REGEX_PHONE.test(values.phoneNumber)) {
+    response.phoneNumber = "invalid";
+  } else {
+    response.phoneNumber = "valid";
+  }
+
+  // Validate image
+  if (!values?.image || !values?.image?.file) {
+    response.image.size = "invalid";
+    response.image.type = "invalid";
+  } else {
+    const imageSizeInMB = values.image.file.size / 1024 / 1024;
+    const imageType = values.image.file.name.match(REGEX_IMAGE);
+
+    if (imageSizeInMB > 1) {
+      response.image.size = "invalid";
+    } else {
+      response.image.size = "valid";
+    }
+
+    if (!imageType) {
+      response.image.type = "invalid";
+    } else {
+      response.image.type = "valid";
+    }
+  }
+
+  return response;
+};

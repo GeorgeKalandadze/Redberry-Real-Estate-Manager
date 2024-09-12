@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useSessionStorage } from "../hooks/useSessionStorage";
-import { ValidateListing } from "../validation/validation";
+import { ValidateListing, ValidateAgent } from "../validation/validation"; // Import both validation functions
 import axiosClient from "../config/axiosClient";
 
 const initialListingInfo = {
   address: "",
   image: {},
-  region_id: null, // Changed from region object to region_id
-  city_id: null, // Changed from city object to city_id
+  region_id: null,
+  city_id: null,
   zip_code: "",
   price: "",
   area: "",
@@ -17,6 +17,14 @@ const initialListingInfo = {
   agent_id: null,
 };
 
+const initialAgentInfo = {
+  name: "",
+  surname: "",
+  email: "",
+  phone: "",
+  avatar: {},
+};
+
 const AppContext = createContext({});
 
 export const AppProvider = ({ children }) => {
@@ -24,8 +32,9 @@ export const AppProvider = ({ children }) => {
     "listing",
     initialListingInfo
   );
+  const [agent, setAgent] = useSessionStorage("agent", initialAgentInfo);
   const [validationErrors, setValidationErrors] = useSessionStorage(
-    "listingErrors",
+    "errors",
     {}
   );
   const [isAgentModalOpen, setIsAgentModalOpen] = useState(false);
@@ -58,15 +67,74 @@ export const AppProvider = ({ children }) => {
     fetchCities();
   }, []);
 
-  const filteredCities = listing?.region_id.value
-    ? cities.filter((city) => city.region_id === listing?.region_id.value)
+  const filteredCities = listing?.region_id?.value
+    ? cities.filter((city) => city.region_id === listing?.region_id?.value)
     : [];
+
+  // Generalized handler for input changes (both listing and agent)
+  const handleInputChange = (e, entity, setEntity, validateFn) => {
+    const { name, value } = e.target;
+    const updatedEntity = { ...entity, [name]: value };
+    const errors = validateFn(updatedEntity);
+
+    setEntity(updatedEntity);
+    setValidationErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: errors[name],
+    }));
+  };
+
+  const handleImageUpload = (
+    event,
+    entity,
+    setEntity,
+    validateFn,
+    fieldName = "image"
+  ) => {
+    const { files } = event.target;
+    if (files && files[0]) {
+      const selectedImage = files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result;
+        const updatedEntity = {
+          ...entity,
+          [fieldName]: { url: dataUrl, name: selectedImage.name },
+        };
+        setEntity(updatedEntity);
+
+        const imageErrors = validateFn(updatedEntity)[fieldName];
+        setValidationErrors((prevErrors) => ({
+          ...prevErrors,
+          [fieldName]: imageErrors,
+        }));
+      };
+      reader.readAsDataURL(selectedImage);
+    }
+  };
+
+
+  const handleImageDelete = (
+    entity,
+    setEntity,
+    validateFn,
+    fieldName = "image"
+  ) => {
+    const updatedEntity = { ...entity, [fieldName]: {} };
+    setEntity(updatedEntity);
+
+    const imageErrors = validateFn(updatedEntity)[fieldName];
+    setValidationErrors((prevErrors) => ({
+      ...prevErrors,
+      [fieldName]: "invalid", // Set errors for the correct field
+    }));
+  };
 
   const handleRegionChange = (region) => {
     const updatedListing = {
       ...listing,
-      region_id: region || null, // Storing only the region_id
-      city_id: null, // Reset city_id when region changes
+      region_id: region || null,
+      city_id: null,
     };
     setSelectedRegion(region);
     setSelectedCity(null);
@@ -83,7 +151,7 @@ export const AppProvider = ({ children }) => {
   const handleCityChange = (city) => {
     const updatedListing = {
       ...listing,
-      city_id: city, // Storing only the city_id
+      city_id: city,
     };
     setSelectedCity(city);
     setListing(updatedListing);
@@ -95,70 +163,27 @@ export const AppProvider = ({ children }) => {
     }));
   };
 
-  const handleTextInputChange = (e) => {
-    const { value, name } = e.target;
-    const updatedListing = { ...listing, [name]: value };
-    const errors = ValidateListing(updatedListing);
-    setListing(updatedListing);
-    setValidationErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: errors[name],
-    }));
-  };
-
-  const handleImageUpload = (event) => {
-    const { files } = event.target;
-    if (files && files[0]) {
-      const selectedImage = files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        const dataUrl = reader.result;
-        const fileName = selectedImage.name;
-        const updatedListing = {
-          ...listing,
-          image: { url: dataUrl, name: fileName },
-        };
-        setListing(updatedListing);
-        const imageErrors = ValidateListing(updatedListing).image;
-        setValidationErrors((prevErrors) => ({
-          ...prevErrors,
-          image: imageErrors,
-        }));
-      };
-      reader.readAsDataURL(selectedImage);
-    }
-  };
-
-  const handleImageDelete = () => {
-    setListing((prevListing) => ({
-      ...prevListing,
-      image: {},
-    }));
-    setValidationErrors((prevErrors) => ({
-      ...prevErrors,
-      image: "invalid",
-    }));
-  };
-
   return (
     <AppContext.Provider
       value={{
         listing,
-        setListing,
+        agent,
         validationErrors,
         setValidationErrors,
-        handleTextInputChange,
+        handleInputChange,
         handleImageUpload,
         handleImageDelete,
+        handleRegionChange,
+        handleCityChange,
+        filteredCities,
         isAgentModalOpen,
         setIsAgentModalOpen,
         cities,
         regions,
         selectedRegion,
         selectedCity,
-        filteredCities,
-        handleRegionChange,
-        handleCityChange,
+        setListing,
+        setAgent,
       }}
     >
       {children}
