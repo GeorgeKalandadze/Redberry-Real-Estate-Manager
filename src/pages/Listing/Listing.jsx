@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -14,13 +14,29 @@ import PhoneIcon from "../../assets/phone.png";
 import Card from "../../components/Card";
 import ArrowIcon from "../../assets/arrow-icon.png"; // Assuming this is the arrow icon you want to use.
 import DeleteListingModal from "../../components/DeleteListingModal";
+import { useParams } from "react-router-dom";
+import axiosClient from "../../config/axiosClient";
 
 const Listing = () => {
+  const { id } = useParams();
+  const [listingDetails, setListingDetails] = useState(null);
   const [swiper, setSwiper] = useState(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  useEffect(() => {
+    const fetchListingDetails = async () => {
+      try {
+        const response = await axiosClient.get(`/real-estates/${id}`);
+        setListingDetails(response.data);
+      } catch (error) {
+        console.error("Error fetching listing details:", error);
+      }
+    };
+
+    fetchListingDetails();
+  }, [id]);
 
   const goToNextSlide = () => {
     if (swiper !== null) {
@@ -39,7 +55,6 @@ const Listing = () => {
     setIsEnd(swiper.isEnd);
   };
 
-  // Dummy data for similar listings
   const similarProperties = [
     {
       id: 1,
@@ -103,12 +118,20 @@ const Listing = () => {
     },
   ];
 
-
-
   const handleDelete = () => {
-    // Handle delete logic here
-    setIsModalOpen(false); // Close modal after deletion
+    setIsModalOpen(false);
   };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear()).slice(-2);
+    return `${day}/${month}/${year}`;
+  };
+
+
+  const rentalLabel = listingDetails?.is_rental === 1 ? "ქირავდება" : "იყიდება";
 
   return (
     <GuestLayout>
@@ -119,61 +142,60 @@ const Listing = () => {
         <div className=" flex flex-col lg:flex-row gap-16 w-full">
           <div className="w-full lg:w-1/2 relative">
             <img
-              src={RandomImg}
+              src={listingDetails?.image}
               alt="Listing"
               className="w-full h-[620px] object-cover rounded-lg"
             />
             <div className="absolute top-4 left-4 bg-black bg-opacity-50 text-white text-sm px-2 py-1 rounded-2xl">
-              იყიდება
+              {rentalLabel}
             </div>
             <p className="text-[#808A93] text-[16px] absolute right-0 mt-4">
-              გამოქვეყნების თარიღი 08/08/24
+              გამოქვეყნების თარიღი {formatDate(listingDetails?.created_at)}
             </p>
           </div>
 
           {/* Right Side: Details Section */}
           <div className="w-full lg:w-1/2 flex flex-col gap-4 justify-between">
             <div className="flex flex-col gap-4">
-              <h1 className="text-3xl font-bold text-[48px]">80,458 ₾</h1>
+              <h1 className="text-3xl font-bold text-[48px]">
+                {listingDetails?.price} ₾
+              </h1>
               <div className="flex flex-col gap-2 text-[#808A93] text-[24px]">
                 <div className="flex gap-2 items-center">
                   <img src={LocationIcon} alt="Location" />
-                  <p>თბილისი, ი. ჭავჭავაძის 53</p>
+                  <p>{listingDetails?.address} 53</p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <img src={SpaceIcon} alt="Space" />
-                  <p>ფართი 55 მ²</p>
+                  <p>ფართი {listingDetails?.area} მ²</p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <img src={BedIcon} alt="Bedrooms" />
-                  <p>საძინებლები 2</p>
+                  <p>საძინებლები {listingDetails?.bedrooms}</p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <img src={MailIndexIcon} alt="Mail Index" />
-                  <p>საფოსტო ინდექსი 2525</p>
+                  <p>საფოსტო ინდექსი {listingDetails?.zip_code}</p>
                 </div>
               </div>
             </div>
 
             <div className="text-[16px] w-[500px] text-[#808A93] leading-relaxed">
-              <p>
-                იყიდება ბინა ქავთარაძის ქუჩაზე, ვაკეში. ბინა არის ახალ
-                რეაბილიტირებული, ორი საძინებლით და დიდი აივნით. მყუდროება და
-                ვაკის ხედი გარანტირებულია.
-              </p>
+              <p>{listingDetails?.description}</p>
             </div>
 
             {/* Agent Section */}
             <div className="flex flex-col items-start gap-4 p-4 border rounded-lg ">
               <div className="flex gap-2 justify-center items-center">
                 <img
-                  src={RandomImg}
+                  src={listingDetails?.agent?.avatar}
                   alt="Agent"
                   className="w-16 h-16 object-cover rounded-full"
                 />
                 <div className="flex flex-col">
                   <p className="font-bold text-[#021526] text-[16px]">
-                    სოფიო გელოვანი
+                    {listingDetails?.agent?.name}{" "}
+                    {listingDetails?.agent?.surname}
                   </p>
                   <p className="text-sm text-[#676E76] text-[14px]">აგენტი</p>
                 </div>
@@ -181,11 +203,11 @@ const Listing = () => {
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2 text-[#85858D]">
                   <img src={EmailIcon} alt="Email" />
-                  <p>sophio.gelovani@redberry.ge</p>
+                  <p>{listingDetails?.agent?.email}</p>
                 </div>
                 <div className="flex items-center gap-2 text-[#85858D]">
                   <img src={PhoneIcon} alt="Phone" />
-                  <p className="text-sm">577 777 777</p>
+                  <p className="text-sm">{listingDetails?.agent?.phone}</p>
                 </div>
               </div>
             </div>
