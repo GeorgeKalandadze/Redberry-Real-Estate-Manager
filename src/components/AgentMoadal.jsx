@@ -4,12 +4,14 @@ import InputGroup from "./InputGroup";
 import ImageUpload from "./ImageUpload";
 import { useGlobalContext } from "../contexts/Context";
 import { ValidateAgent } from "../validation/validation";
+import axiosClient from "../config/axiosClient";
 
 const AgentModal = () => {
   const {
     agent, 
     setAgent,
     validationErrors,
+    setValidationErrors,
     isAgentModalOpen,
     setIsAgentModalOpen,
     handleInputChange,
@@ -20,6 +22,58 @@ const AgentModal = () => {
   if (!isAgentModalOpen) return null;
 
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validation = ValidateAgent(agent);
+    if (Object.values(validation).some((error) => error === "invalid")) {
+      console.log("Form has validation errors");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", agent.firstName);
+    formData.append("surname", agent.lastName);
+    formData.append("email", agent.email);
+    formData.append("phone", agent.phoneNumber);
+    const response = await fetch(agent.avatar.url);
+    const blob = await response.blob();
+    formData.append("avatar", blob, agent.avatar.url);
+
+    try {
+      const response = await axiosClient.post("/agents", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setAgent({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        avatar: {},
+      });
+
+       setValidationErrors((prevErrors) => ({
+         ...prevErrors,
+         firstName: "",
+         lastName: "",
+         email: "",
+         phoneNumber: "",
+         avatar: "",
+       }));
+
+      setIsAgentModalOpen(false);
+    } catch (error) {
+      console.error("Error adding agent:", error.response?.data || error);
+    }
+  };
+
+
+
+  console.log(validationErrors);
+  
 
   
 
@@ -41,7 +95,7 @@ const AgentModal = () => {
         <h1 className="text-[32px] font-bold mb-6 text-center">
           აგენტის დამატება
         </h1>
-        <form className="w-full flex flex-col gap-8">
+        <form className="w-full flex flex-col gap-8" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-4">
             <div className="w-full flex gap-6">
               <InputGroup
@@ -102,7 +156,6 @@ const AgentModal = () => {
                 handleImageDelete(agent, setAgent, ValidateAgent, "avatar")
               }
               isValid={validationErrors?.avatar}
-              
             />
           </div>
 
