@@ -4,6 +4,7 @@ import InputGroup from "../../components/InputGroup";
 import CustomSelect from "../../components/CustomSelect";
 import CustomRadio from "../../components/CustomRadio";
 import TextareaGroup from "../../components/TextareaGroup";
+import ImageUpload from "../../components/ImageUpload";
 
 const CreateListing = () => {
   const options = ["იმერეთი", "სამეგრელო", "სამცხე", "გურია"];
@@ -103,6 +104,28 @@ const CreateListing = () => {
                 hint="მინიმუმ ხუთი სიტყვა"
                 name="description"
               />
+              <ImageUpload label="ატვირთეთ ფოტო" />
+            </div>
+            <div className="w-1/2 flex pr-4 flex-col gap-4">
+              <h2 className="text-[16px] font-bold">აგენტი</h2>
+              <CustomSelect
+                label="აირჩიე"
+                options={options}
+                placeholder="აირჩიე"
+                onChange={handleSelectChange}
+                value={selectedRegion}
+              />
+            </div>
+            <div className="flex justify-end items-center gap-4">
+              <button
+                to="/create-listing"
+                className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl"
+              >
+                გაუქმება
+              </button>
+              <button className=" text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl">
+                დაამატე ლისტინგი
+              </button>
             </div>
           </form>
         </div>

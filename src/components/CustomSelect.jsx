@@ -31,11 +31,11 @@ const CustomSelect = ({ label, options, placeholder, onChange, value }) => {
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
-      <label className="font-bold text-[14px] text-[#1A1A1F] mb-2">
+      <label className="font-bold text-[14px] text-[#1A1A1F]">
         {label}
       </label>
       <div
-        className={`border-2 ${
+        className={`mt-1 border-2 ${
           isOpen
             ? "border-[#c3c2c8] rounded-t-lg"
             : "border-[#c3c2c8] rounded-lg"
