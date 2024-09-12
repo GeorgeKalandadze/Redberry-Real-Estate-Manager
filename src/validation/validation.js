@@ -90,7 +90,7 @@ export const ValidateListing = (values) => {
     response.description = "valid";
   }
 
-  if (values.is_rental === undefined || values.is_rental === null) {
+  if (values?.is_rental == "") {
     response.is_rental = "invalid";
   } else {
     response.is_rental = "valid";

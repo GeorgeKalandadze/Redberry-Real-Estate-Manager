@@ -1,6 +1,6 @@
-const CustomRadio = ({ options, name, selectedValue, onChange }) => {
+const CustomRadio = ({ options, name, selectedValue, onChange, isValid }) => {
   return (
-    <div className="flex gap-6 items-center">
+    <div className="flex gap-6 items-center ">
       {options.map((option, index) => (
         <label
           key={index}
@@ -11,7 +11,7 @@ const CustomRadio = ({ options, name, selectedValue, onChange }) => {
             name={name}
             value={option.value}
             checked={selectedValue === option.value}
-            onChange={() => onChange(option.value)}
+            onChange={() => onChange(name, option.value)} // Pass both name and value
             className="hidden"
           />
           <span
@@ -26,6 +26,7 @@ const CustomRadio = ({ options, name, selectedValue, onChange }) => {
           <span className="text-sm text-[#021526]">{option.label}</span>
         </label>
       ))}
+      
     </div>
   );
 };

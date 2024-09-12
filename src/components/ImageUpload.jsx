@@ -3,7 +3,6 @@ import TrashIcon from "../assets/trash.png";
 
 const ImageUpload = ({ label, isValid, handleChange, values, handleImageDelete }) => {
 
-  console.log(isValid);
   
   const borderColor =
     isValid?.size && isValid?.type === "valid"

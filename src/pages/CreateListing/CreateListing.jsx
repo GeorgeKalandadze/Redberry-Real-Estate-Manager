@@ -24,9 +24,8 @@ const CreateListing = () => {
     handleImageDelete,
     agents,
     setValidationErrors,
+    handleRadioChange,
   } = useGlobalContext();
-
-  const [selectedCardType, setSelectedCardType] = useState("");
 
   const handleAgentChange = (agent) => {
     const updatedListing = {
@@ -93,6 +92,9 @@ const CreateListing = () => {
   };
   
 
+  console.log(listing);
+  
+
   return (
     <GuestLayout>
       <div className="flex justify-center">
@@ -103,13 +105,56 @@ const CreateListing = () => {
               <h2 className="text-[16px] font-bold">გარიგების ტიპი</h2>
               <CustomRadio
                 options={[
-                  { label: "იყიდება", value: "იყიდება" },
-                  { label: "ქირავდება", value: "ქირავდება" },
+                  { label: "იყიდება", value: "0" },
+                  { label: "ქირავდება", value: "1" },
                 ]}
-                name="transactionType"
-                selectedValue={selectedCardType}
-                onChange={(value) => setSelectedCardType(value)}
+                name="is_rental"
+                selectedValue={listing?.is_rental}
+                onChange={(name, value) =>
+                  handleRadioChange(
+                    name,
+                    value,
+                    listing,
+                    setListing,
+                    ValidateListing
+                  )
+                }
               />
+              <div className="flex items-center gap-3 mt-1">
+                <svg
+                  width="12"
+                  height="11"
+                  viewBox="0 0 12 11"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    stroke:
+                      validationErrors?.is_rental === "valid"
+                        ? "#45A849"
+                        : validationErrors?.is_rental === "invalid"
+                        ? "#F93B1D"
+                        : "black",
+                  }}
+                >
+                  <path
+                    d="M11 1.40918L4.125 9.591L1 5.87199"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <p
+                  className={`font-medium text-[14px] ${
+                    validationErrors?.is_rental === "valid"
+                      ? "text-green-500"
+                      : validationErrors?.is_rental === "invalid"
+                      ? "text-red-500"
+                      : "text-[#85858D]"
+                  }`}
+                >
+                  აირჩიეთ გარიგების ტიპი
+                </p>
+              </div>
             </div>
 
             <div className="flex flex-col gap-4">
@@ -243,7 +288,7 @@ const CreateListing = () => {
               <CustomSelect
                 label="აირჩიე"
                 options={agents?.map((agent) => ({
-                  label: `${agent.name} ${agent.surname}`, 
+                  label: `${agent.name} ${agent.surname}`,
                   value: agent.id,
                 }))}
                 placeholder="აირჩიე აგენტი"
@@ -256,7 +301,7 @@ const CreateListing = () => {
               <button
                 type="button"
                 className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl"
-                onClick={() => window.history.back()} 
+                onClick={() => window.history.back()}
               >
                 გაუქმება
               </button>

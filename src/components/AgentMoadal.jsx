@@ -28,8 +28,13 @@ const AgentModal = () => {
     const validation = ValidateAgent(agent);
     setValidationErrors(validation);
 
-    if (Object.values(validation).some((error) => error === "invalid")) {
-      return;
+    const hasInvalidFields =
+      Object.values(validation).some((error) => error === "invalid") ||
+      validation.avatar.size === "invalid" ||
+      validation.avatar.type === "invalid";
+
+    if (hasInvalidFields) {
+      return; 
     }
 
     const formData = new FormData();
@@ -62,7 +67,7 @@ const AgentModal = () => {
         lastName: "",
         email: "",
         phoneNumber: "",
-        avatar: "",
+        avatar: { size: "", type: "" },
       });
 
       setIsAgentModalOpen(false);
@@ -73,8 +78,6 @@ const AgentModal = () => {
 
 
 
-
-  console.log(validationErrors);
   
 
   
