@@ -17,6 +17,14 @@ const initialListingInfo = {
   agent_id: null,
 };
 
+const initialAgentInfo = {
+  name: "",
+  surname: "",
+  email: "",
+  phone: "",
+  avatar: {},
+};
+
 const AppContext = createContext({});
 
 export const AppProvider = ({ children }) => {
@@ -24,6 +32,7 @@ export const AppProvider = ({ children }) => {
     "listing",
     initialListingInfo
   );
+  const [agent, setAgent] = useSessionStorage("agent", initialAgentInfo); // Re-added agent state
   const [validationErrors, setValidationErrors] = useSessionStorage(
     "errors",
     {}
@@ -34,6 +43,7 @@ export const AppProvider = ({ children }) => {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [isAgentModalOpen, setIsAgentModalOpen] = useState(false);
+  const [realEstateList, setRealEstateList] = useState([]);
 
   useEffect(() => {
     const fetchRegions = async () => {
@@ -59,16 +69,32 @@ export const AppProvider = ({ children }) => {
     fetchCities();
   }, []);
 
+
+  const fetchAgents = async () => {
+    try {
+      const response = await axiosClient.get("/agents");
+      setAgents(response.data);
+    } catch (error) {
+      console.error("Error fetching agents:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchAgents = async () => {
-      try {
-        const response = await axiosClient.get("/agents");
-        setAgents(response.data);
-      } catch (error) {
-        console.error("Error fetching agents:", error);
-      }
-    };
     fetchAgents();
+  }, []);
+
+
+  const fetchRealEstateList = async () => {
+    try {
+      const response = await axiosClient.get("/real-estates");
+      setRealEstateList(response.data);
+    } catch (error) {
+      console.error("Error fetching real estates:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRealEstateList();
   }, []);
 
   const filteredCities = listing?.region_id?.value
@@ -163,7 +189,6 @@ export const AppProvider = ({ children }) => {
     }));
   };
 
-
   const handleRadioChange = (name, value, entity, setEntity, validateFn) => {
     const updatedEntity = { ...entity, [name]: value };
     const errors = validateFn(updatedEntity);
@@ -178,6 +203,7 @@ export const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         listing,
+        agent, // Include agent in the provider
         validationErrors,
         setValidationErrors,
         handleInputChange,
@@ -191,9 +217,13 @@ export const AppProvider = ({ children }) => {
         cities,
         agents,
         setListing,
+        setAgent, 
         handleRadioChange,
         isAgentModalOpen,
         setIsAgentModalOpen,
+        realEstateList,
+        fetchRealEstateList,
+        fetchAgents
       }}
     >
       {children}

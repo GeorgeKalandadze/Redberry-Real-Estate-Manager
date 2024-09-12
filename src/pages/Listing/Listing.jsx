@@ -107,7 +107,6 @@ const Listing = () => {
 
   const handleDelete = () => {
     // Handle delete logic here
-    console.log("Listing deleted");
     setIsModalOpen(false); // Close modal after deletion
   };
 

@@ -17,6 +17,7 @@ const AgentModal = () => {
     handleInputChange,
     handleImageUpload,
     handleImageDelete,
+    fetchAgents
   } = useGlobalContext();
 
   if (!isAgentModalOpen) return null;
@@ -71,6 +72,7 @@ const AgentModal = () => {
       });
 
       setIsAgentModalOpen(false);
+      fetchAgents();
     } catch (error) {
       console.error("Error adding agent:", error.response?.data || error);
     }

@@ -25,6 +25,7 @@ const CreateListing = () => {
     agents,
     setValidationErrors,
     handleRadioChange,
+    fetchRealEstateList,
   } = useGlobalContext();
 
   const handleAgentChange = (agent) => {
@@ -49,7 +50,6 @@ const CreateListing = () => {
 
     const validation = ValidateListing(listing);
     if (Object.values(validation).some((error) => error === "invalid")) {
-      console.log("Form has validation errors");
       setValidationErrors(validation);
       return;
     }
@@ -79,7 +79,6 @@ const CreateListing = () => {
         },
       });
 
-      console.log("Listing added successfully:", response.data);
 
       setListing({
         address: "",
@@ -95,13 +94,12 @@ const CreateListing = () => {
       });
 
       setValidationErrors({});
+      fetchRealEstateList();
     } catch (error) {
       console.error("Error adding listing:", error.response?.data || error);
     }
   };
   
-
-  console.log(listing);
   
 
   return (

@@ -4,21 +4,19 @@ import BedIcon from "../assets/bed.png";
 import MailIndexIcon from "../assets/mail-index.png";
 import SpaceIcon from "../assets/space.png";
 
-const Card = ({ image, price, address, beds, area, mailIndex, label }) => {
+const Card = ({ image, price, address, beds, area, mailIndex, label, isRental }) => {
+  const rentalLabel = isRental === 1 ? "ქირავდება" : "იყიდება";
   return (
     <div className="border rounded-lg overflow-hidden shadow-lg min-w-full">
-      
       <div className="relative">
         <img
           src={image}
           alt="Property"
           className="w-full h-[300px] object-cover"
         />
-        {label && (
-          <span className="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-sm px-2 py-1 rounded-2xl">
-            {label}
-          </span>
-        )}
+        <span className="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-sm px-2 py-1 rounded-2xl">
+          {rentalLabel}
+        </span>
       </div>
       <div className="p-4 flex flex-col">
         <div className="text-[28px] font-bold text-black">{price} ₾</div>
