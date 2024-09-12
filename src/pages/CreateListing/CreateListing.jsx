@@ -5,19 +5,26 @@ import CustomSelect from "../../components/CustomSelect";
 import CustomRadio from "../../components/CustomRadio";
 import TextareaGroup from "../../components/TextareaGroup";
 import ImageUpload from "../../components/ImageUpload";
+import { useGlobalContext } from "../../contexts/Context";
 
 const CreateListing = () => {
-  const options = ["იმერეთი", "სამეგრელო", "სამცხე", "გურია"];
-  const [selectedRegion, setSelectedRegion] = useState("");
+  const {
+    listing,
+    regions,
+    handleTextInputChange,
+    handleRegionChange,
+    filteredCities,
+    selectedRegion,
+    handleCityChange,
+    validationErrors
+  } = useGlobalContext();
+
   const [selectedCardType, setSelectedCardType] = useState("");
 
-  const handleSelectChange = (value) => {
-    setSelectedRegion(value);
-  };
 
-  const handleCardTypeChange = (value) => {
-    setSelectedCardType(value);
-  };
+  console.log(validationErrors);
+  
+  
 
   return (
     <GuestLayout>
@@ -29,12 +36,12 @@ const CreateListing = () => {
               <h2 className="text-[16px] font-bold">გარიგების ტიპი</h2>
               <CustomRadio
                 options={[
-                  { label: "იიგდება", value: "იგდება" },
+                  { label: "იყიდება", value: "იყიდება" },
                   { label: "ქირავდება", value: "ქირავდება" },
                 ]}
                 name="transactionType"
                 selectedValue={selectedCardType}
-                onChange={handleCardTypeChange}
+                onChange={(value) => setSelectedCardType(value)}
               />
             </div>
 
@@ -46,28 +53,43 @@ const CreateListing = () => {
                   type="text"
                   hint="მინიმუმ ორი სიმბოლო"
                   name="address"
+                  value={listing?.address}
+                  onChange={handleTextInputChange}
+                  isValid={validationErrors?.address}
                 />
                 <InputGroup
-                  label="სართული"
-                  type="number"
-                  hint="მინიმუმ ერთი ციფრი"
-                  name="floor"
+                  label="საფოსტო ინდექსი"
+                  type="text"
+                  hint="მხოლოდ რიცხვები"
+                  name="zip_code"
+                  value={listing?.zip_code}
+                  onChange={handleTextInputChange}
+                  isValid={validationErrors?.zip_code}
                 />
               </div>
               <div className="w-full flex gap-6">
                 <CustomSelect
                   label="რეგიონი *"
-                  options={options}
+                  options={regions?.map((region) => ({
+                    label: region.name,
+                    value: region.id,
+                  }))}
                   placeholder="აირჩიე"
-                  onChange={handleSelectChange}
-                  value={selectedRegion}
+                  onChange={handleRegionChange}
+                  value={listing.region_id}
+                  isValid={validationErrors?.region_id}
                 />
                 <CustomSelect
                   label="ქალაქი *"
-                  options={options}
+                  options={filteredCities.map((city) => ({
+                    label: city.name,
+                    value: city.id,
+                  }))}
                   placeholder="აირჩიე"
-                  onChange={handleSelectChange}
-                  value={selectedRegion}
+                  onChange={handleCityChange}
+                  value={listing.city_id}
+                  disabled={!selectedRegion}
+                  isValid={validationErrors?.city_id}
                 />
               </div>
             </div>
@@ -77,51 +99,60 @@ const CreateListing = () => {
               <div className="w-full flex gap-6">
                 <InputGroup
                   label="ფასი"
-                  type="number"
-                  hint="მინიმუმ ერთი ციფრი"
+                  type="text"
+                  hint="მხოლოდ რიცხვები"
                   name="price"
+                  value={listing?.price}
+                  onChange={handleTextInputChange}
+                  isValid={validationErrors?.price}
                 />
                 <InputGroup
                   label="ოთახების რაოდენობა"
-                  type="number"
-                  hint="მინიმუმ ერთი ოთახი"
-                  name="rooms"
+                  type="text"
+                  hint="მხოლოდ რიცხვები"
+                  name="area"
+                  value={listing?.area}
+                  onChange={handleTextInputChange}
+                  isValid={validationErrors?.area}
                 />
               </div>
               <div className="w-1/2 flex pr-4">
                 <InputGroup
                   label="საძინებლების რაოდენობა"
-                  type="number"
+                  type="text"
                   hint="მინიმუმ ერთი საძინებელი"
                   name="bedrooms"
+                  value={listing?.bedrooms}
+                  onChange={handleTextInputChange}
+                  isValid={validationErrors?.bedrooms}
                 />
               </div>
               <TextareaGroup
                 label="ბინის აღწერა"
                 hint="მინიმუმ ხუთი სიტყვა"
                 name="description"
+                onChange={handleTextInputChange}
+                value={listing?.description}
+                isValid={validationErrors?.description}
               />
               <ImageUpload label="ატვირთეთ ფოტო" />
             </div>
+
             <div className="w-1/2 flex pr-4 flex-col gap-4">
               <h2 className="text-[16px] font-bold">აგენტი</h2>
               <CustomSelect
                 label="აირჩიე"
-                options={options}
                 placeholder="აირჩიე"
-                onChange={handleSelectChange}
+                onChange={(value) => setSelectedRegion(value)}
                 value={selectedRegion}
               />
             </div>
             <div className="flex justify-end items-center gap-4">
-              <button
-                to="/create-listing"
-                className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl"
-              >
+              <button className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl">
                 გაუქმება
               </button>
-              <button className=" text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl">
-                დაამატე ლისტინგი
+              <button className="text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl">
+                დამატება
               </button>
             </div>
           </form>

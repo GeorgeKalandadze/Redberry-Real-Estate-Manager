@@ -1,17 +1,25 @@
 import React, { useState, useRef, useEffect } from "react";
-import ArrowDownIcon from "../assets/arrow-down.png"; // Custom arrow icon
+import ArrowDownIcon from "../assets/arrow-down.png";
 
-const CustomSelect = ({ label, options, placeholder, onChange, value }) => {
+const CustomSelect = ({ label, options, placeholder, onChange, value, isValid }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState(value || placeholder);
   const dropdownRef = useRef(null);
+  const [selectedValue, setSelectedValue] = useState(
+    value?.label || placeholder
+  );
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  useEffect(() => {
+    if (value) {
+      setSelectedValue(value.label);
+    } else {
+      setSelectedValue(placeholder);
+    }
+  }, [value, placeholder]);
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleOptionClick = (option) => {
-    setSelectedValue(option);
+    setSelectedValue(option.label);
     onChange(option);
     setIsOpen(false);
   };
@@ -21,25 +29,30 @@ const CustomSelect = ({ label, options, placeholder, onChange, value }) => {
       setIsOpen(false);
     }
   };
+  
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+   const dropdownStyles = {
+     borderColor:
+       isValid === "valid"
+         ? "#c3c2c8"
+         : isValid === "invalid"
+         ? "#F93B1D"
+         : "#c3c2c8",
+   };
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
-      <label className="font-bold text-[14px] text-[#1A1A1F]">
-        {label}
-      </label>
+      <label className="font-bold text-[14px] text-[#1A1A1F]">{label}</label>
       <div
-        className={`mt-1 border-2 ${
-          isOpen
-            ? "border-[#c3c2c8] rounded-t-lg"
-            : "border-[#c3c2c8] rounded-lg"
-        } px-3 py-2 flex justify-between items-center cursor-pointer transition-all duration-300`}
+        className={`mt-1 border-[2px] px-3 py-2 flex justify-between items-center cursor-pointer transition-all duration-300 ${
+          isOpen ? "rounded-t-lg" : "rounded-lg"
+        }`}
+        style={dropdownStyles} // Apply the dynamic border and background colors here
         onClick={toggleDropdown}
       >
         <span>{selectedValue}</span>
@@ -60,30 +73,24 @@ const CustomSelect = ({ label, options, placeholder, onChange, value }) => {
           opacity: isOpen ? "1" : "0",
         }}
       >
-        <ul className="divide-y divide-gray-300 ">
-          <li
-            className="px-4 py-2 hover:bg-gray-100 flex items-center cursor-pointer"
-            onClick={() => handleOptionClick("add")}
-          >
-            <span className="text-lg mr-2 rounded-full border border-black flex items-center justify-center w-4 h-4">
-              +
-            </span>{" "}
-            დაამატე დამატებითი
-          </li>
-          {options.map((option, index) => (
-            <li
-              key={index}
-              className="px-4  py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => handleOptionClick(option)}
-            >
-              {option}
-            </li>
-          ))}
-        </ul>
+        {options && options.length > 0 ? (
+          <ul className="divide-y divide-gray-300">
+            {options.map((option, index) => (
+              <li
+                key={index}
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => handleOptionClick(option)}
+              >
+                {option.label}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="px-4 py-2 text-gray-500">No options available.</div>
+        )}
       </div>
     </div>
   );
 };
 
 export default CustomSelect;
-
