@@ -25,7 +25,6 @@ const CreateListing = () => {
         <div className="w-[790px] flex gap-8 flex-col items-center">
           <h1 className="text-[32px] font-bold ">ლისტინგის დამატება</h1>
           <form className="w-full flex flex-col gap-12" action="">
-            {/* Transaction Type */}
             <div className="flex flex-col gap-2">
               <h2 className="text-[16px] font-bold">გარიგების ტიპი</h2>
               <CustomRadio
@@ -39,7 +38,6 @@ const CreateListing = () => {
               />
             </div>
 
-            {/* Location Section */}
             <div className="flex flex-col gap-4">
               <h2 className="text-[16px] font-bold">მდებარეობა</h2>
               <div className="w-full flex gap-6">
@@ -74,7 +72,6 @@ const CreateListing = () => {
               </div>
             </div>
 
-            {/* Apartment Details Section */}
             <div className="flex flex-col gap-4">
               <h2 className="text-[16px] font-bold">ბინის დეტალები</h2>
               <div className="w-full flex gap-6">

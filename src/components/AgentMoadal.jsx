@@ -13,7 +13,8 @@ const AgentModal = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed z-50 inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center"
+      className="fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center backdrop-blur-md"
+      style={{ backdropFilter: "blur(10px)" }}
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.8, y: 50 }}

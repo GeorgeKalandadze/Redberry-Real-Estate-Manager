@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import CreateListing from "./pages/CreateListing/CreateListing";
+import Listing from "./pages/Listing/Listing";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create-listing" element={<CreateListing />} />
+          <Route path="/listing" element={<Listing />} />
         </Routes>
       </Router>
     </div>
