@@ -42,6 +42,7 @@ export const AppProvider = ({ children }) => {
   const [regions, setRegions] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
+  const [agents, setAgents] = useState([]);
 
   useEffect(() => {
     const fetchRegions = async () => {
@@ -55,6 +56,7 @@ export const AppProvider = ({ children }) => {
     fetchRegions();
   }, []);
 
+
   useEffect(() => {
     const fetchCities = async () => {
       try {
@@ -66,6 +68,21 @@ export const AppProvider = ({ children }) => {
     };
     fetchCities();
   }, []);
+
+
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const response = await axiosClient.get("/agents");
+        setAgents(response.data);
+      } catch (error) {
+        console.error("Error fetching regions:", error);
+      }
+    };
+    fetchAgents();
+  }, []);
+  
+
 
   const filteredCities = listing?.region_id?.value
     ? cities.filter((city) => city.region_id === listing?.region_id?.value)
@@ -89,7 +106,7 @@ export const AppProvider = ({ children }) => {
     entity,
     setEntity,
     validateFn,
-    fieldName = "image"
+    fieldName = "avatar"
   ) => {
     const { files } = event.target;
     if (files && files[0]) {
@@ -99,14 +116,14 @@ export const AppProvider = ({ children }) => {
         const dataUrl = reader.result;
         const updatedEntity = {
           ...entity,
-          [fieldName]: { url: dataUrl, name: selectedImage.name },
+          [fieldName]: { url: dataUrl, file: selectedImage }, // Store both url and file
         };
         setEntity(updatedEntity);
 
         const imageErrors = validateFn(updatedEntity)[fieldName];
         setValidationErrors((prevErrors) => ({
           ...prevErrors,
-          [fieldName]: imageErrors,
+          [fieldName]: imageErrors, // Update the entire avatar object
         }));
       };
       reader.readAsDataURL(selectedImage);
@@ -118,15 +135,14 @@ export const AppProvider = ({ children }) => {
     entity,
     setEntity,
     validateFn,
-    fieldName = "image"
+    fieldName = "avatar"
   ) => {
     const updatedEntity = { ...entity, [fieldName]: {} };
     setEntity(updatedEntity);
 
-    const imageErrors = validateFn(updatedEntity)[fieldName];
     setValidationErrors((prevErrors) => ({
       ...prevErrors,
-      [fieldName]: "invalid", // Set errors for the correct field
+      [fieldName]: { size: "invalid", type: "invalid" }, 
     }));
   };
 
@@ -184,6 +200,7 @@ export const AppProvider = ({ children }) => {
         selectedCity,
         setListing,
         setAgent,
+        agents
       }}
     >
       {children}

@@ -2,19 +2,22 @@ import React from "react";
 import TrashIcon from "../assets/trash.png";
 
 const ImageUpload = ({ label, isValid, handleChange, values, handleImageDelete }) => {
+
+  console.log(isValid);
+  
   const borderColor =
-    isValid === "valid"
-      ? "border-green-500"
-      : isValid === "invalid"
+    isValid?.size && isValid?.type === "valid"
+      ? "border-[#c3c2c8]"
+      : isValid?.size && isValid?.type === "invalid"
       ? "border-red-500"
       : "border-[#c3c2c8]";
 
-  // const backgroundColor =
-  //   isValid === "valid"
-  //     ? "bg-[#F8FFF8]"
-  //     : isValid === "invalid"
-  //     ? "bg-[#FAF2F3]"
-  //     : "";
+  const backgroundColor =
+    isValid === "valid"
+      ? "bg-[#F8FFF8]"
+      : isValid === "invalid"
+      ? "bg-[#FAF2F3]"
+      : "";
 
 
   

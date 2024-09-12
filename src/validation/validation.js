@@ -112,7 +112,7 @@ export const ValidateAgent = (values) => {
     lastName: "",
     email: "",
     phoneNumber: "",
-    image: {
+    avatar: {
       size: "",
       type: "",
     },
@@ -150,26 +150,27 @@ export const ValidateAgent = (values) => {
     response.phoneNumber = "valid";
   }
 
-  // Validate image
-  if (!values?.image || !values?.image?.file) {
-    response.image.size = "invalid";
-    response.image.type = "invalid";
+  // Validate avatar (image)
+  if (!values?.avatar || !values?.avatar?.file) {
+    response.avatar.size = "invalid";
+    response.avatar.type = "invalid";
   } else {
-    const imageSizeInMB = values.image.file.size / 1024 / 1024;
-    const imageType = values.image.file.name.match(REGEX_IMAGE);
+    const imageSizeInMB = values.avatar.file.size / 1024 / 1024;
+    const imageType = values.avatar.file.name.match(REGEX_IMAGE);
 
     if (imageSizeInMB > 1) {
-      response.image.size = "invalid";
+      response.avatar.size = "invalid";
     } else {
-      response.image.size = "valid";
+      response.avatar.size = "valid";
     }
 
     if (!imageType) {
-      response.image.type = "invalid";
+      response.avatar.type = "invalid";
     } else {
-      response.image.type = "valid";
+      response.avatar.type = "valid";
     }
   }
 
   return response;
 };
+

@@ -26,8 +26,9 @@ const AgentModal = () => {
     e.preventDefault();
 
     const validation = ValidateAgent(agent);
+    setValidationErrors(validation);
+
     if (Object.values(validation).some((error) => error === "invalid")) {
-      console.log("Form has validation errors");
       return;
     }
 
@@ -36,6 +37,7 @@ const AgentModal = () => {
     formData.append("surname", agent.lastName);
     formData.append("email", agent.email);
     formData.append("phone", agent.phoneNumber);
+
     const response = await fetch(agent.avatar.url);
     const blob = await response.blob();
     formData.append("avatar", blob, agent.avatar.url);
@@ -55,20 +57,20 @@ const AgentModal = () => {
         avatar: {},
       });
 
-       setValidationErrors((prevErrors) => ({
-         ...prevErrors,
-         firstName: "",
-         lastName: "",
-         email: "",
-         phoneNumber: "",
-         avatar: "",
-       }));
+      setValidationErrors({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        avatar: "",
+      });
 
       setIsAgentModalOpen(false);
     } catch (error) {
       console.error("Error adding agent:", error.response?.data || error);
     }
   };
+
 
 
 
@@ -155,7 +157,9 @@ const AgentModal = () => {
               handleImageDelete={() =>
                 handleImageDelete(agent, setAgent, ValidateAgent, "avatar")
               }
-              isValid={validationErrors?.avatar}
+              isValid={
+                validationErrors?.avatar
+              }
             />
           </div>
 
