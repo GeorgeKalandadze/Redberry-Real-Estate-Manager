@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
+import TrashIcon from "../assets/trash.png";
 
-const ImageUpload = ({ label }) => {
-  const [image, setImage] = useState(null);
+const ImageUpload = ({ label, isValid, handleChange, values, handleImageDelete }) => {
+  const borderColor =
+    isValid === "valid"
+      ? "border-green-500"
+      : isValid === "invalid"
+      ? "border-red-500"
+      : "border-[#c3c2c8]";
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
-    }
-  };
+  // const backgroundColor =
+  //   isValid === "valid"
+  //     ? "bg-[#F8FFF8]"
+  //     : isValid === "invalid"
+  //     ? "bg-[#FAF2F3]"
+  //     : "";
 
   return (
     <div className="w-full flex flex-col gap-2">
       <label className="font-bold text-[14px]">{label}*</label>
-      <div className="w-full h-[150px] border-dashed border-2 border-[#c3c2c8] rounded-lg flex items-center justify-center relative">
-        {!image ? (
+      <div
+        className={`w-full h-[150px] ${borderColor}  border-dashed border-2 rounded-lg flex items-center justify-center relative`}
+      >
+        {!values.image?.url ? (
           <>
             <label
               htmlFor="file-upload"
@@ -29,16 +36,24 @@ const ImageUpload = ({ label }) => {
                 id="file-upload"
                 accept="image/*"
                 className="cursor-pointer absolute top-0 left-0 w-full h-full opacity-0"
-                onChange={handleImageUpload}
+                onChange={handleChange}
               />
             </label>
           </>
         ) : (
-          <img
-            src={image}
-            alt="Uploaded"
-            className="w-full h-full object-cover rounded-lg"
-          />
+          <div className="relative">
+            <img
+              src={values.image?.url}
+              alt="Uploaded"
+              className="w-[92px] h-[82px] object-cover rounded-lg"
+            />
+            <button
+              onClick={handleImageDelete}
+              className="absolute bottom-[-10px] right-[-10px] border border-black bg-white rounded-full p-1 shadow-sm"
+            >
+              <img src={TrashIcon} alt="Delete" className="w-4 h-4" />
+            </button>
+          </div>
         )}
       </div>
     </div>

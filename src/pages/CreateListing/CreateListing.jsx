@@ -16,7 +16,9 @@ const CreateListing = () => {
     filteredCities,
     selectedRegion,
     handleCityChange,
-    validationErrors
+    validationErrors,
+    handleImageUpload, 
+    handleImageDelete,
   } = useGlobalContext();
 
   const [selectedCardType, setSelectedCardType] = useState("");
@@ -135,7 +137,13 @@ const CreateListing = () => {
                 value={listing?.description}
                 isValid={validationErrors?.description}
               />
-              <ImageUpload label="ატვირთეთ ფოტო" />
+              <ImageUpload
+                label="ატვირთეთ ფოტო "
+                isValid={validationErrors?.image}
+                handleChange={handleImageUpload}
+                values={listing}
+                handleImageDelete={handleImageDelete}
+              />
             </div>
 
             <div className="w-1/2 flex pr-4 flex-col gap-4">
