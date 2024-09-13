@@ -14,7 +14,7 @@ import PhoneIcon from "../../assets/phone.png";
 import Card from "../../components/Card";
 import ArrowIcon from "../../assets/arrow-icon.png";
 import DeleteListingModal from "../../components/DeleteListingModal";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../config/axiosClient";
 import { useGlobalContext } from "../../contexts/Context";
 
@@ -26,7 +26,7 @@ const Listing = () => {
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  const { setRealEstateList, realEstateList, fetchRealEstateList } =
+  const {  realEstateList, fetchRealEstateList } =
     useGlobalContext();
 
   useEffect(() => {
@@ -59,9 +59,7 @@ const Listing = () => {
         error.response?.data || error
       );
     }
-  };
-
-   const updatedList = realEstateList.filter((item) => item.id !== id);   
+  };  
 
 
   const goToNextSlide = () => {
@@ -81,69 +79,6 @@ const Listing = () => {
     setIsEnd(swiper.isEnd);
   };
 
-  const similarProperties = [
-    {
-      id: 1,
-      price: "80 000",
-      address: "თბილისი, ი. ჭავჭავაძის 53",
-      beds: 2,
-      area: 55,
-      mailIndex: 160,
-      label: "ქირავდება",
-      image: RandomImg,
-    },
-    {
-      id: 2,
-      price: "90 000",
-      address: "ბათუმი, რუსთაველის 45",
-      beds: 3,
-      area: 75,
-      mailIndex: 123,
-      label: "იყიდება",
-      image: RandomImg,
-    },
-    {
-      id: 3,
-      price: "70 000",
-      address: "ქუთაისი, აღმაშენებლის 5",
-      beds: 2,
-      area: 60,
-      mailIndex: 145,
-      label: "ქირავდება",
-      image: RandomImg,
-    },
-    {
-      id: 4,
-      price: "70 000",
-      address: "ქუთაისი, აღმაშენებლის 5",
-      beds: 2,
-      area: 60,
-      mailIndex: 145,
-      label: "ქირავდება",
-      image: RandomImg,
-    },
-    {
-      id: 5,
-      price: "70 000",
-      address: "ქუთაისი, აღმაშენებლის 5",
-      beds: 2,
-      area: 60,
-      mailIndex: 145,
-      label: "ქირავდება",
-      image: RandomImg,
-    },
-    {
-      id: 6,
-      price: "70 000",
-      address: "ქუთაისი, აღმაშენებლის 5",
-      beds: 2,
-      area: 60,
-      mailIndex: 145,
-      label: "ქირავდება",
-      image: RandomImg,
-    },
-  ];
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -152,15 +87,35 @@ const Listing = () => {
     return `${day}/${month}/${year}`;
   };
 
+  // const similarProperties = realEstateList.filter((property) => {
+  //   return (
+  //     listingDetails &&
+  //     property.city.region.name === listingDetails.city.region.name
+  //   );
+  // });
+
+
+  const similarProperties = realEstateList.filter((property) => {
+    return (
+      listingDetails &&
+      property.city.region_id === listingDetails.city.region_id
+    );
+  });
+
+
+  console.log(realEstateList);
+  console.log(listingDetails);
+  
+
 
   const rentalLabel = listingDetails?.is_rental === 1 ? "ქირავდება" : "იყიდება";
 
   return (
     <GuestLayout>
       <div className="flex flex-col justify-center py-12">
-        <button className="mb-6">
+        <Link to='/' className="mb-6">
           <img src={ArrowIcon} alt="Next" />
-        </button>
+        </Link>
         <div className=" flex flex-col lg:flex-row gap-16 w-full">
           <div className="w-full lg:w-1/2 relative">
             <img
