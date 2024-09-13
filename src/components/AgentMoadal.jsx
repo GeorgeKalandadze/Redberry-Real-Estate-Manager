@@ -162,9 +162,7 @@ const AgentModal = () => {
               handleImageDelete={() =>
                 handleImageDelete(agent, setAgent, ValidateAgent, "avatar")
               }
-              isValid={
-                validationErrors?.avatar
-              }
+              isValid={validationErrors?.avatar}
             />
           </div>
 
@@ -172,13 +170,13 @@ const AgentModal = () => {
             <button
               type="button"
               onClick={() => setIsAgentModalOpen(false)}
-              className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl"
+              className="border border-[#F93B1D] text-[#F93B1D]  text-[16px] font-medium px-6 py-4 rounded-xl"
             >
               გაუქმება
             </button>
             <button
               type="submit"
-              className="text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl"
+              className=" bg-[#F93B1D] text-white   text-[16px] font-medium px-6 py-4 rounded-xl"
             >
               დაამატე აგენტი
             </button>

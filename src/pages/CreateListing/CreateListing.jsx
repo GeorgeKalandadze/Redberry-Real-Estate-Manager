@@ -307,16 +307,16 @@ const CreateListing = () => {
             <div className="flex justify-end items-center gap-4">
               <button
                 type="button"
-                className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl"
+                className=" text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl"
                 onClick={() => window.history.back()}
               >
                 გაუქმება
               </button>
               <button
                 type="submit"
-                className="text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl"
+                className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl"
               >
-                დამატება
+                დაამატე ლისტინგი
               </button>
             </div>
           </form>
