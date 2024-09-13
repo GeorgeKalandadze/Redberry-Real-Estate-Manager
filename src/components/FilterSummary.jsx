@@ -16,8 +16,7 @@ const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
   };
 
   return (
-    <div className="flex gap-3 flex-wrap items-center mb-4">
-      {/* Regions */}
+    <div className=" items-center mb-4">
       {filters.regions.length > 0 &&
         filters.regions.map((region) => (
           <div
@@ -34,7 +33,6 @@ const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
           </div>
         ))}
 
-      {/* Price */}
       {(filters.price.from || filters.price.to) && (
         <div className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700">
           {formatPrice(filters.price.from, filters.price.to)}
@@ -47,7 +45,6 @@ const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
         </div>
       )}
 
-      {/* Area */}
       {(filters.area.from || filters.area.to) && (
         <div className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700">
           {formatArea(filters.area.from, filters.area.to)}
@@ -60,7 +57,6 @@ const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
         </div>
       )}
 
-      {/* Bedrooms */}
       {filters.bedrooms && (
         <div className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700">
           {filters.bedrooms} საძინებელი
@@ -73,7 +69,6 @@ const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
         </div>
       )}
 
-      {/* Clear All */}
       <button
         className="ml-auto text-red-500 hover:text-red-700 font-semibold"
         onClick={clearAllFilters}

@@ -131,15 +131,13 @@ const FilterSection = ({
   const { regions } = useGlobalContext();
 
   const staticPrices = ["50,000", "100,000", "150,000", "200,000", "300,000"];
-  const staticAreas = [
-    "50,000 ",
-    "100,000 ",
-    "150,000 ",
-    "200,000 ",
-    "300,000 ",
-  ];
+  const staticAreas = ["50,000", "100,000", "150,000", "200,000", "300,000"];
 
-  // Store filter changes locally (but do not apply yet)
+  // Sync tempFilters with the actual filters when filters are cleared
+  useEffect(() => {
+    setTempFilters(filters);
+  }, [filters]); // Whenever filters change, update tempFilters
+
   const handleTempFilterChange = (filterKey, value) => {
     setTempFilters((prevFilters) => ({
       ...prevFilters,
@@ -157,8 +155,8 @@ const FilterSection = ({
   };
 
   const applyTempFilters = () => {
-    setFilters(tempFilters); // Apply temp filters to the actual filters
-    setOpenDropdown(null); // Close the filter dropdown after applying filters
+    setFilters(tempFilters); 
+    setOpenDropdown(null)
   };
 
   const toggleDropdown = (dropdownName) => {
