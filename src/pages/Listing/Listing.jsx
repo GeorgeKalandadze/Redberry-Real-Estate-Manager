@@ -61,9 +61,7 @@ const Listing = () => {
     }
   };
 
-   const updatedList = realEstateList.filter((item) => item.id !== id);
-   console.log("updated list", updatedList);
-   
+   const updatedList = realEstateList.filter((item) => item.id !== id);   
 
 
   const goToNextSlide = () => {

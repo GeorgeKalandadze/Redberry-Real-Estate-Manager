@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import ArrowDownIcon from "../assets/arrow-down.png";
 import { useGlobalContext } from "../contexts/Context";
 
-// Utility Component for Checkboxes
 const CustomCheckbox = ({ label, checked, onChange }) => {
   return (
     <label className="flex items-center cursor-pointer space-x-2">
@@ -72,7 +71,7 @@ const StaticValueList = ({ values, onSelect }) => {
 
 const FilterItem = React.forwardRef(
   (
-    { label, children, isOpen, toggleOpen, applyFilters, closeFilterSection },
+    { label, children, isOpen, toggleOpen, applyFilters },
     ref
   ) => {
     return (
@@ -119,24 +118,19 @@ const FilterItem = React.forwardRef(
 const FilterSection = ({
   filters,
   setFilters,
-  applyFilters,
   closeFilterSection,
 }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
-
-  // Temporary filter state
   const [tempFilters, setTempFilters] = useState(filters);
-
   const dropdownRefs = useRef([]);
   const { regions } = useGlobalContext();
 
   const staticPrices = ["50,000", "100,000", "150,000", "200,000", "300,000"];
   const staticAreas = ["50,000", "100,000", "150,000", "200,000", "300,000"];
-
-  // Sync tempFilters with the actual filters when filters are cleared
+  
   useEffect(() => {
     setTempFilters(filters);
-  }, [filters]); // Whenever filters change, update tempFilters
+  }, [filters]);
 
   const handleTempFilterChange = (filterKey, value) => {
     setTempFilters((prevFilters) => ({
@@ -182,14 +176,13 @@ const FilterSection = ({
 
   return (
     <div className="flex py-2 gap-4 rounded-lg border-[#DBDBDB] border">
-      {/* Region Filter */}
       <FilterItem
         label="რეგიონი"
         isOpen={openDropdown === "location"}
         toggleOpen={() => toggleDropdown("location")}
         ref={(el) => (dropdownRefs.current["location"] = el)}
         applyFilters={applyTempFilters}
-        closeFilterSection={closeFilterSection} // Pass the closeFilterSection handler
+        closeFilterSection={closeFilterSection}
       >
         <div className="grid grid-cols-4 gap-8">
           {regions.map((region) => (
@@ -203,7 +196,6 @@ const FilterSection = ({
         </div>
       </FilterItem>
 
-      {/* Price Filter */}
       <FilterItem
         label="ფასის მითითებით"
         isOpen={openDropdown === "price"}
@@ -237,7 +229,6 @@ const FilterSection = ({
           />
         </div>
 
-        {/* Static Price Values */}
         <div className="grid grid-cols-2 gap-8 mt-4">
           <div>
             <p className="font-bold mb-3">მინ. ფასი</p>
@@ -265,8 +256,6 @@ const FilterSection = ({
           </div>
         </div>
       </FilterItem>
-
-      {/* Area Filter */}
       <FilterItem
         label="ფართობის მითითებით"
         isOpen={openDropdown === "area"}
@@ -299,8 +288,6 @@ const FilterSection = ({
             icon="მ²"
           />
         </div>
-
-        {/* Static Area Values */}
         <div className="grid grid-cols-2 gap-8 mt-4">
           <div>
             <p className="font-bold mb-3">დან. მ²</p>
@@ -328,8 +315,6 @@ const FilterSection = ({
           </div>
         </div>
       </FilterItem>
-
-      {/* Bedrooms Filter */}
       <FilterItem
         label="საძინებლების რაოდენობა"
         isOpen={openDropdown === "bedrooms"}
@@ -339,7 +324,7 @@ const FilterSection = ({
       >
         <FilterInput
           value={tempFilters.bedrooms || ""} 
-          placeholder="Enter number of bedrooms"
+          placeholder="ოთახების რაოდენობა"
           onChange={(e) => {
             const value = parseInt(e.target.value, 10);
             handleTempFilterChange("bedrooms", isNaN(value) ? "" : value); 

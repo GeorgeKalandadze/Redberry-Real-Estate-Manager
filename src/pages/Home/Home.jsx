@@ -22,25 +22,117 @@ const Home = () => {
     useState(realEstateList);
 
   // Apply the filters to the real estate list
-  useEffect(() => {
-    const filtered = realEstateList.filter((property) => {
-      const matchRegion =
-        filters.regions.length === 0 ||
-        filters.regions.includes(property.city.region.name);
-      const matchBedrooms =
-        !filters.bedrooms || property.bedrooms === Number(filters.bedrooms);
-      const matchPrice =
+  // useEffect(() => {
+  //   const filtered = realEstateList.filter((property) => {
+  //     const matchRegion =
+  //       filters.regions.length === 0 ||
+  //       filters.regions.includes(property.city.region.name);
+  //     const matchBedrooms =
+  //       !filters.bedrooms || property.bedrooms === Number(filters.bedrooms);
+  //     const matchPrice =
+  //       (!filters.price.from || property.price >= Number(filters.price.from)) &&
+  //       (!filters.price.to || property.price <= Number(filters.price.to));
+  //     const matchArea =
+  //       (!filters.area.from || property.area >= Number(filters.area.from)) &&
+  //       (!filters.area.to || property.area <= Number(filters.area.to));
+
+  //     return matchRegion && matchBedrooms && matchPrice && matchArea;
+  //   });
+
+  //   setFilteredRealEstateList(filtered);
+  // }, [filters, realEstateList]);
+
+
+// useEffect(() => {
+//   const filtered = realEstateList.filter((property) => {
+//     // At least one of these conditions must be true to include the property
+
+//     const matchRegion =
+//       filters.regions.length === 0 ||
+//       filters.regions.includes(property.city.region.name);
+
+//     const matchBedrooms =
+//       !filters.bedrooms || property.bedrooms === Number(filters.bedrooms);
+
+//     const matchPrice =
+//       !filters.price.from ||
+//       property.price >= Number(filters.price.from) ||
+//       !filters.price.to ||
+//       property.price <= Number(filters.price.to);
+
+//     const matchArea =
+//       !filters.area.from ||
+//       property.area >= Number(filters.area.from) ||
+//       !filters.area.to ||
+//       property.area <= Number(filters.area.to);
+
+//     // Include the property if at least one criterion matches
+//     return matchRegion || matchBedrooms || matchPrice || matchArea;
+//   });
+
+//   setFilteredRealEstateList(filtered);
+// }, [filters, realEstateList]);
+
+
+
+useEffect(() => {
+  const filteredRealEstateList = realEstateList.filter((property) => {
+    // Check if there are any active filters
+    const noFiltersApplied =
+      filters.regions.length === 0 &&
+      !filters.bedrooms &&
+      !filters.price.from &&
+      !filters.price.to &&
+      !filters.area.from &&
+      !filters.area.to;
+
+    // If no filters are applied, return all properties
+    if (noFiltersApplied) {
+      return true;
+    }
+
+    let matchesAtLeastOneFilter = false;
+
+    // Check if the region filter is active and matches
+    if (filters.regions.length > 0) {
+      matchesAtLeastOneFilter = filters.regions.includes(
+        property.city.region.name
+      );
+    }
+
+    // Check if the bedrooms filter is active and matches
+    if (filters.bedrooms) {
+      matchesAtLeastOneFilter =
+        matchesAtLeastOneFilter ||
+        property.bedrooms === Number(filters.bedrooms);
+    }
+
+    if (filters.price.from || filters.price.to) {
+      const matchesPrice =
         (!filters.price.from || property.price >= Number(filters.price.from)) &&
         (!filters.price.to || property.price <= Number(filters.price.to));
-      const matchArea =
+      matchesAtLeastOneFilter = matchesAtLeastOneFilter || matchesPrice;
+    }
+
+    if (filters.area.from || filters.area.to) {
+      const matchesArea =
         (!filters.area.from || property.area >= Number(filters.area.from)) &&
         (!filters.area.to || property.area <= Number(filters.area.to));
+      matchesAtLeastOneFilter = matchesAtLeastOneFilter || matchesArea;
+    }
 
-      return matchRegion && matchBedrooms && matchPrice && matchArea;
-    });
+    return matchesAtLeastOneFilter;
+  });
 
-    setFilteredRealEstateList(filtered);
-  }, [filters, realEstateList]);
+  setFilteredRealEstateList(filteredRealEstateList);
+}, [filters, realEstateList]);
+
+
+
+
+
+
+
 
 
   const handleRemoveFilter = (filterType, value) => {
@@ -113,7 +205,7 @@ const Home = () => {
               </Link>
             ))
           ) : (
-            <p>No properties found</p>
+            <p>აღნიშნული მონაცემებით განცხადება არ იძებნება</p>
           )}
         </div>
       </div>

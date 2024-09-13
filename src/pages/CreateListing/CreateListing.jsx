@@ -232,7 +232,7 @@ const CreateListing = () => {
                   isValid={validationErrors?.price}
                 />
                 <InputGroup
-                  label="ოთახების რაოდენობა"
+                  label="ფართობი"
                   type="text"
                   hint="მხოლოდ რიცხვები"
                   name="area"

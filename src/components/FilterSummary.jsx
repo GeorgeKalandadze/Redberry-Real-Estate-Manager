@@ -1,5 +1,5 @@
 import React from "react";
-
+import ClearIcon from "../assets/clear-icon.png";
 const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
   const formatPrice = (from, to) => {
     if (!from && !to) return "";
@@ -16,64 +16,64 @@ const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
   };
 
   return (
-    <div className=" items-center mb-4">
+    <div className="flex gap-4 items-center mb-4">
       {filters.regions.length > 0 &&
         filters.regions.map((region) => (
           <div
             key={region}
-            className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700"
+            className="inline-flex items-center px-[10px] py-[4px] border border-[#DBDBDB] rounded-full text-sm text-[#354451]"
           >
             {region}
             <button
               className="ml-2 text-red-500 hover:text-red-700"
               onClick={() => removeFilter("regions", region)}
             >
-              ✕
+              <img src={ClearIcon} alt="" />
             </button>
           </div>
         ))}
 
       {(filters.price.from || filters.price.to) && (
-        <div className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700">
+        <div className="inline-flex items-center px-[10px] py-[4px] border border-[#DBDBDB] rounded-full text-sm text-[#354451]">
           {formatPrice(filters.price.from, filters.price.to)}
           <button
             className="ml-2 text-red-500 hover:text-red-700"
             onClick={() => removeFilter("price")}
           >
-            ✕
+            <img src={ClearIcon} alt="" />
           </button>
         </div>
       )}
 
       {(filters.area.from || filters.area.to) && (
-        <div className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700">
+        <div className="inline-flex items-center px-[10px] py-[4px] border border-[#DBDBDB] rounded-full text-sm text-[#354451]">
           {formatArea(filters.area.from, filters.area.to)}
           <button
             className="ml-2 text-red-500 hover:text-red-700"
             onClick={() => removeFilter("area")}
           >
-            ✕
+            <img src={ClearIcon} alt="" />
           </button>
         </div>
       )}
 
       {filters.bedrooms && (
-        <div className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700">
+        <div className="inline-flex items-center px-[10px] py-[4px] border border-[#DBDBDB] rounded-full text-sm text-[#354451]">
           {filters.bedrooms} საძინებელი
           <button
             className="ml-2 text-red-500 hover:text-red-700"
             onClick={() => removeFilter("bedrooms")}
           >
-            ✕
+            <img src={ClearIcon} alt="" />
           </button>
         </div>
       )}
 
       <button
-        className="ml-auto text-red-500 hover:text-red-700 font-semibold"
+        className="ml-4 text-[17px] font-semibold"
         onClick={clearAllFilters}
       >
-        ყველა ფილტრის გასუფთავება
+        გასუფთავება
       </button>
     </div>
   );
