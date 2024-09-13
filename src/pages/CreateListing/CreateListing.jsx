@@ -79,26 +79,30 @@ const CreateListing = () => {
         },
       });
 
+      if (response.status === 201) {
+        setListing({
+          address: "",
+          zip_code: "",
+          region_id: null,
+          city_id: null,
+          price: "",
+          area: "",
+          bedrooms: "",
+          description: "",
+          image: {},
+          agent_id: null,
+          is_rental: "",
+        });
 
-      // setListing({
-      //   address: "",
-      //   zip_code: "",
-      //   region_id: null,
-      //   city_id: null,
-      //   price: "",
-      //   area: "",
-      //   bedrooms: "",
-      //   description: "",
-      //   image: {},
-      //   agent_id: null,
-      // });
-
-      setValidationErrors({});
-      fetchRealEstateList();
+        setValidationErrors({});
+        fetchRealEstateList();
+        navigate("/");
+      }
     } catch (error) {
       console.error("Error adding listing:", error.response?.data || error);
     }
   };
+
   
   
 

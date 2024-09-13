@@ -5,10 +5,11 @@ import ImageUpload from "./ImageUpload";
 import { useGlobalContext } from "../contexts/Context";
 import { ValidateAgent } from "../validation/validation";
 import axiosClient from "../config/axiosClient";
+import useClickOutside from "../hooks/useClickOutside";
 
 const AgentModal = () => {
   const {
-    agent, 
+    agent,
     setAgent,
     validationErrors,
     setValidationErrors,
@@ -17,11 +18,15 @@ const AgentModal = () => {
     handleInputChange,
     handleImageUpload,
     handleImageDelete,
-    fetchAgents
+    fetchAgents,
   } = useGlobalContext();
 
-  if (!isAgentModalOpen) return null;
+  // Using the hook to detect click outside
+  const modalRef = useClickOutside( () =>
+    setIsAgentModalOpen(false)
+  );
 
+  if (!isAgentModalOpen) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +40,7 @@ const AgentModal = () => {
       validation.avatar.type === "invalid";
 
     if (hasInvalidFields) {
-      return; 
+      return;
     }
 
     const formData = new FormData();
@@ -78,12 +83,6 @@ const AgentModal = () => {
     }
   };
 
-
-
-  
-
-  
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -98,6 +97,7 @@ const AgentModal = () => {
         exit={{ opacity: 0, scale: 0.8, y: 50 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         className="bg-white rounded-lg shadow-lg p-8 w-[790px] z-50 relative"
+        ref={modalRef} // Attach the ref to the modal div
       >
         <h1 className="text-[32px] font-bold mb-6 text-center">
           აგენტის დამატება
