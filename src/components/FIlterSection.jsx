@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import ArrowDownIcon from "../assets/arrow-down.png";
+import { useGlobalContext } from "../contexts/Context";
 
 // Utility Component for Checkboxes
 const CustomCheckbox = ({ label, checked, onChange }) => {
@@ -13,12 +14,19 @@ const CustomCheckbox = ({ label, checked, onChange }) => {
       >
         {checked && (
           <svg
+            width="12"
+            height="11"
+            viewBox="0 0 12 11"
+            fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="white"
-            className="w-4 h-4"
           >
-            <path d="M20.285 6.055l-11.43 11.43-4.285-4.285 1.43-1.43 2.855 2.855 10-10z" />
+            <path
+              d="M11 1.40918L4.125 9.591L1 5.87199"
+              stroke={checked ? "white" : "#021526"}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         )}
       </div>
@@ -27,7 +35,6 @@ const CustomCheckbox = ({ label, checked, onChange }) => {
   );
 };
 
-// Utility Component for Input with icon (₾ or m²)
 const FilterInput = ({ value, placeholder, onChange, icon }) => {
   return (
     <div className="relative">
@@ -47,7 +54,6 @@ const FilterInput = ({ value, placeholder, onChange, icon }) => {
   );
 };
 
-// Utility Component for Static Value List
 const StaticValueList = ({ values, onSelect }) => {
   return (
     <ul className="space-y-2">
@@ -64,9 +70,11 @@ const StaticValueList = ({ values, onSelect }) => {
   );
 };
 
-// Reusable Filter Dropdown
 const FilterItem = React.forwardRef(
-  ({ label, children, isOpen, toggleOpen }, ref) => {
+  (
+    { label, children, isOpen, toggleOpen, applyFilters, closeFilterSection },
+    ref
+  ) => {
     return (
       <div ref={ref} className="px-2 relative text-left">
         <button
@@ -95,7 +103,9 @@ const FilterItem = React.forwardRef(
           <div className="flex justify-end mt-2">
             <button
               className="bg-[#F93B1D] max-w-max px-3 text-white w-full py-2 mt-4 rounded-lg hover:bg-red-600 transition"
-              onClick={() => console.log("Applied filter")}
+              onClick={() => {
+                applyFilters();
+              }}
             >
               არჩევა
             </button>
@@ -106,58 +116,49 @@ const FilterItem = React.forwardRef(
   }
 );
 
-const FilterSection = () => {
+const FilterSection = ({
+  filters,
+  setFilters,
+  applyFilters,
+  closeFilterSection,
+}) => {
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [filters, setFilters] = useState({
-    regions: [],
-    bedrooms: "",
-    price: { from: "", to: "" },
-    area: { from: "", to: "" },
-  });
 
-  // Refs for outside click detection
+  // Temporary filter state
+  const [tempFilters, setTempFilters] = useState(filters);
+
   const dropdownRefs = useRef([]);
+  const { regions } = useGlobalContext();
 
-  const regions = [
-    "თბილისი",
-    "ბათუმი",
-    "ქუთაისი",
-    "გურია",
-    "კახეთი",
-    "რაჭა",
-    "სამეგრელო",
-    "სამცხე-ჯავახეთი",
-  ];
-
-  const staticPrices = [
-    "50,000 ₾",
-    "100,000 ₾",
-    "150,000 ₾",
-    "200,000 ₾",
-    "300,000 ₾",
-  ];
+  const staticPrices = ["50,000", "100,000", "150,000", "200,000", "300,000"];
   const staticAreas = [
-    "50,000 მ²",
-    "100,000 მ²",
-    "150,000 მ²",
-    "200,000 მ²",
-    "300,000 მ²",
+    "50,000 ",
+    "100,000 ",
+    "150,000 ",
+    "200,000 ",
+    "300,000 ",
   ];
 
-  const handleFilterChange = (filterKey, value) => {
-    setFilters((prevFilters) => ({
+  // Store filter changes locally (but do not apply yet)
+  const handleTempFilterChange = (filterKey, value) => {
+    setTempFilters((prevFilters) => ({
       ...prevFilters,
       [filterKey]: value,
     }));
   };
 
   const handleRegionChange = (region) => {
-    setFilters((prevFilters) => ({
+    setTempFilters((prevFilters) => ({
       ...prevFilters,
       regions: prevFilters.regions.includes(region)
         ? prevFilters.regions.filter((r) => r !== region)
         : [...prevFilters.regions, region],
     }));
+  };
+
+  const applyTempFilters = () => {
+    setFilters(tempFilters); // Apply temp filters to the actual filters
+    setOpenDropdown(null); // Close the filter dropdown after applying filters
   };
 
   const toggleDropdown = (dropdownName) => {
@@ -189,14 +190,16 @@ const FilterSection = () => {
         isOpen={openDropdown === "location"}
         toggleOpen={() => toggleDropdown("location")}
         ref={(el) => (dropdownRefs.current["location"] = el)}
+        applyFilters={applyTempFilters}
+        closeFilterSection={closeFilterSection} // Pass the closeFilterSection handler
       >
         <div className="grid grid-cols-4 gap-8">
           {regions.map((region) => (
             <CustomCheckbox
-              key={region}
-              label={region}
-              checked={filters.regions.includes(region)}
-              onChange={() => handleRegionChange(region)}
+              key={region.id}
+              label={region.name}
+              checked={tempFilters.regions.includes(region.name)}
+              onChange={() => handleRegionChange(region.name)}
             />
           ))}
         </div>
@@ -208,25 +211,27 @@ const FilterSection = () => {
         isOpen={openDropdown === "price"}
         toggleOpen={() => toggleDropdown("price")}
         ref={(el) => (dropdownRefs.current["price"] = el)}
+        applyFilters={applyTempFilters}
+        closeFilterSection={closeFilterSection}
       >
         <div className="grid grid-cols-2 gap-4">
           <FilterInput
-            value={filters.price.from}
+            value={tempFilters.price.from}
             placeholder="დან"
             onChange={(e) =>
-              handleFilterChange("price", {
-                ...filters.price,
+              handleTempFilterChange("price", {
+                ...tempFilters.price,
                 from: e.target.value,
               })
             }
             icon="₾"
           />
           <FilterInput
-            value={filters.price.to}
+            value={tempFilters.price.to}
             placeholder="მდე"
             onChange={(e) =>
-              handleFilterChange("price", {
-                ...filters.price,
+              handleTempFilterChange("price", {
+                ...tempFilters.price,
                 to: e.target.value,
               })
             }
@@ -241,7 +246,10 @@ const FilterSection = () => {
             <StaticValueList
               values={staticPrices}
               onSelect={(value) =>
-                handleFilterChange("price", { ...filters.price, from: value })
+                handleTempFilterChange("price", {
+                  ...tempFilters.price,
+                  from: value,
+                })
               }
             />
           </div>
@@ -250,7 +258,10 @@ const FilterSection = () => {
             <StaticValueList
               values={staticPrices}
               onSelect={(value) =>
-                handleFilterChange("price", { ...filters.price, to: value })
+                handleTempFilterChange("price", {
+                  ...tempFilters.price,
+                  to: value,
+                })
               }
             />
           </div>
@@ -263,25 +274,27 @@ const FilterSection = () => {
         isOpen={openDropdown === "area"}
         toggleOpen={() => toggleDropdown("area")}
         ref={(el) => (dropdownRefs.current["area"] = el)}
+        applyFilters={applyTempFilters}
+        closeFilterSection={closeFilterSection}
       >
         <div className="grid grid-cols-2 gap-4">
           <FilterInput
-            value={filters.area.from}
+            value={tempFilters.area.from}
             placeholder="დან"
             onChange={(e) =>
-              handleFilterChange("area", {
-                ...filters.area,
+              handleTempFilterChange("area", {
+                ...tempFilters.area,
                 from: e.target.value,
               })
             }
             icon="მ²"
           />
           <FilterInput
-            value={filters.area.to}
+            value={tempFilters.area.to}
             placeholder="მდე"
             onChange={(e) =>
-              handleFilterChange("area", {
-                ...filters.area,
+              handleTempFilterChange("area", {
+                ...tempFilters.area,
                 to: e.target.value,
               })
             }
@@ -296,7 +309,10 @@ const FilterSection = () => {
             <StaticValueList
               values={staticAreas}
               onSelect={(value) =>
-                handleFilterChange("area", { ...filters.area, from: value })
+                handleTempFilterChange("area", {
+                  ...tempFilters.area,
+                  from: value,
+                })
               }
             />
           </div>
@@ -305,7 +321,10 @@ const FilterSection = () => {
             <StaticValueList
               values={staticAreas}
               onSelect={(value) =>
-                handleFilterChange("area", { ...filters.area, to: value })
+                handleTempFilterChange("area", {
+                  ...tempFilters.area,
+                  to: value,
+                })
               }
             />
           </div>
@@ -318,22 +337,16 @@ const FilterSection = () => {
         isOpen={openDropdown === "bedrooms"}
         toggleOpen={() => toggleDropdown("bedrooms")}
         ref={(el) => (dropdownRefs.current["bedrooms"] = el)}
+        applyFilters={applyTempFilters}
       >
-        <div className="grid grid-cols-4 gap-2">
-          {[1, 2, 3, 4, 5].map((bedroom) => (
-            <button
-              key={bedroom}
-              onClick={() => handleFilterChange("bedrooms", bedroom)}
-              className={`w-10 h-10 border rounded-md flex items-center justify-center text-lg font-semibold ${
-                filters.bedrooms === bedroom
-                  ? "bg-gray-200 border-black"
-                  : "bg-white"
-              }`}
-            >
-              {bedroom}
-            </button>
-          ))}
-        </div>
+        <FilterInput
+          value={tempFilters.bedrooms || ""} 
+          placeholder="Enter number of bedrooms"
+          onChange={(e) => {
+            const value = parseInt(e.target.value, 10);
+            handleTempFilterChange("bedrooms", isNaN(value) ? "" : value); 
+          }}
+        />
       </FilterItem>
     </div>
   );
