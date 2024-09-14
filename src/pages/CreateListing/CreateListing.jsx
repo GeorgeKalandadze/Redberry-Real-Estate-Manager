@@ -34,11 +34,8 @@ const CreateListing = () => {
       ...listing,
       agent_id: agent,
     };
-
     setListing(updatedListing);
-
     const errors = ValidateListing(updatedListing);
-
     setValidationErrors((prevErrors) => ({
       ...prevErrors,
       agent_id: errors.agent_id,
@@ -56,7 +53,7 @@ const CreateListing = () => {
       setValidationErrors(validation);
       return;
     }
-
+    
     const formData = new FormData();
     formData.append("address", listing.address);
     formData.append("zip_code", listing.zip_code);

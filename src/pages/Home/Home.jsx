@@ -5,130 +5,69 @@ import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../contexts/Context";
 import { useSessionStorage } from "../../hooks/useSessionStorage"; 
 import FilterSummary from "../../components/FilterSummary";
-import FilterSection from "../../components/FIlterSection";
+import FilterSection from "../../components/Filter/FIlterSection";
 
 const Home = () => {
-  const { setIsAgentModalOpen, realEstateList } = useGlobalContext();
+  const { setIsAgentModalOpen, realEstateList, setFilters, filters } =
+    useGlobalContext();
 
-  // Use session storage for filters
-  const [filters, setFilters] = useSessionStorage("realEstateFilters", {
-    regions: [],
-    bedrooms: "",
-    price: { from: "", to: "" },
-    area: { from: "", to: "" },
-  });
+  // const [filters, setFilters] = useSessionStorage("realEstateFilters", {
+  //   regions: [],
+  //   bedrooms: "",
+  //   price: { from: "", to: "" },
+  //   area: { from: "", to: "" },
+  // });
 
   const [filteredRealEstateList, setFilteredRealEstateList] =
     useState(realEstateList);
 
-  // Apply the filters to the real estate list
-  // useEffect(() => {
-  //   const filtered = realEstateList.filter((property) => {
-  //     const matchRegion =
-  //       filters.regions.length === 0 ||
-  //       filters.regions.includes(property.city.region.name);
-  //     const matchBedrooms =
-  //       !filters.bedrooms || property.bedrooms === Number(filters.bedrooms);
-  //     const matchPrice =
-  //       (!filters.price.from || property.price >= Number(filters.price.from)) &&
-  //       (!filters.price.to || property.price <= Number(filters.price.to));
-  //     const matchArea =
-  //       (!filters.area.from || property.area >= Number(filters.area.from)) &&
-  //       (!filters.area.to || property.area <= Number(filters.area.to));
+  useEffect(() => {
+    const filteredRealEstateList = realEstateList.filter((property) => {
+      const noFiltersApplied =
+        filters.regions.length === 0 &&
+        !filters.bedrooms &&
+        !filters.price.from &&
+        !filters.price.to &&
+        !filters.area.from &&
+        !filters.area.to;
 
-  //     return matchRegion && matchBedrooms && matchPrice && matchArea;
-  //   });
+      if (noFiltersApplied) {
+        return true;
+      }
 
-  //   setFilteredRealEstateList(filtered);
-  // }, [filters, realEstateList]);
+      let matchesAtLeastOneFilter = false;
 
+      if (filters.regions.length > 0) {
+        matchesAtLeastOneFilter = filters.regions.includes(
+          property.city.region.name
+        );
+      }
 
-// useEffect(() => {
-//   const filtered = realEstateList.filter((property) => {
-//     // At least one of these conditions must be true to include the property
+      if (filters.bedrooms) {
+        matchesAtLeastOneFilter =
+          matchesAtLeastOneFilter ||
+          property.bedrooms === Number(filters.bedrooms);
+      }
 
-//     const matchRegion =
-//       filters.regions.length === 0 ||
-//       filters.regions.includes(property.city.region.name);
+      if (filters.price.from || filters.price.to) {
+        const matchesPrice =
+          (!filters.price.from || property.price >= Number(filters.price.from)) &&
+          (!filters.price.to || property.price <= Number(filters.price.to));
+        matchesAtLeastOneFilter = matchesAtLeastOneFilter || matchesPrice;
+      }
 
-//     const matchBedrooms =
-//       !filters.bedrooms || property.bedrooms === Number(filters.bedrooms);
+      if (filters.area.from || filters.area.to) {
+        const matchesArea =
+          (!filters.area.from || property.area >= Number(filters.area.from)) &&
+          (!filters.area.to || property.area <= Number(filters.area.to));
+        matchesAtLeastOneFilter = matchesAtLeastOneFilter || matchesArea;
+      }
 
-//     const matchPrice =
-//       !filters.price.from ||
-//       property.price >= Number(filters.price.from) ||
-//       !filters.price.to ||
-//       property.price <= Number(filters.price.to);
+      return matchesAtLeastOneFilter;
+    });
 
-//     const matchArea =
-//       !filters.area.from ||
-//       property.area >= Number(filters.area.from) ||
-//       !filters.area.to ||
-//       property.area <= Number(filters.area.to);
-
-//     // Include the property if at least one criterion matches
-//     return matchRegion || matchBedrooms || matchPrice || matchArea;
-//   });
-
-//   setFilteredRealEstateList(filtered);
-// }, [filters, realEstateList]);
-
-
-
-useEffect(() => {
-  const filteredRealEstateList = realEstateList.filter((property) => {
-    const noFiltersApplied =
-      filters.regions.length === 0 &&
-      !filters.bedrooms &&
-      !filters.price.from &&
-      !filters.price.to &&
-      !filters.area.from &&
-      !filters.area.to;
-
-    if (noFiltersApplied) {
-      return true;
-    }
-
-    let matchesAtLeastOneFilter = false;
-
-    if (filters.regions.length > 0) {
-      matchesAtLeastOneFilter = filters.regions.includes(
-        property.city.region.name
-      );
-    }
-
-    if (filters.bedrooms) {
-      matchesAtLeastOneFilter =
-        matchesAtLeastOneFilter ||
-        property.bedrooms === Number(filters.bedrooms);
-    }
-
-    if (filters.price.from || filters.price.to) {
-      const matchesPrice =
-        (!filters.price.from || property.price >= Number(filters.price.from)) &&
-        (!filters.price.to || property.price <= Number(filters.price.to));
-      matchesAtLeastOneFilter = matchesAtLeastOneFilter || matchesPrice;
-    }
-
-    if (filters.area.from || filters.area.to) {
-      const matchesArea =
-        (!filters.area.from || property.area >= Number(filters.area.from)) &&
-        (!filters.area.to || property.area <= Number(filters.area.to));
-      matchesAtLeastOneFilter = matchesAtLeastOneFilter || matchesArea;
-    }
-
-    return matchesAtLeastOneFilter;
-  });
-
-  setFilteredRealEstateList(filteredRealEstateList);
-}, [filters, realEstateList]);
-
-
-
-
-
-
-
+    setFilteredRealEstateList(filteredRealEstateList);
+  }, [filters, realEstateList]);
 
 
   const handleRemoveFilter = (filterType, value) => {
@@ -184,26 +123,26 @@ useEffect(() => {
           removeFilter={handleRemoveFilter}
           clearAllFilters={clearAllFilters}
         />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredRealEstateList.length > 0 ? (
-            filteredRealEstateList.map((property) => (
-              <Link to={`listing/${property.id}`} key={property.id}>
-                <Card
-                  image={property.image}
-                  price={property.price}
-                  address={property.address}
-                  beds={property.bedrooms}
-                  area={property.area}
-                  mailIndex={property.zip_code}
-                  label={property.label}
-                  isRental={property.is_rental}
-                />
-              </Link>
-            ))
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {filteredRealEstateList.map((property) => (
+                <Link to={`listing/${property.id}`} key={property.id}>
+                  <Card
+                    image={property.image}
+                    price={property.price}
+                    address={property.address}
+                    beds={property.bedrooms}
+                    area={property.area}
+                    mailIndex={property.zip_code}
+                    label={property.label}
+                    isRental={property.is_rental}
+                  />
+                </Link>
+              ))}
+            </div>
           ) : (
-            <p>აღნიშნული მონაცემებით განცხადება არ იძებნება</p>
+            <p className="w-full">აღნიშნული მონაცემებით განცხადება არ იძებნება</p>
           )}
-        </div>
       </div>
     </GuestLayout>
   );

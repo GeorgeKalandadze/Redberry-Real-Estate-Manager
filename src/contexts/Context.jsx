@@ -37,6 +37,12 @@ export const AppProvider = ({ children }) => {
     "errors",
     {}
   );
+  const [filters, setFilters] = useSessionStorage("realEstateFilters", {
+    regions: [],
+    bedrooms: "",
+    price: { from: "", to: "" },
+    area: { from: "", to: "" },
+  });
   const [regions, setRegions] = useState([]);
   const [cities, setCities] = useState([]);
   const [agents, setAgents] = useState([]);
@@ -233,6 +239,8 @@ export const AppProvider = ({ children }) => {
         realEstateList,
         fetchRealEstateList,
         fetchAgents,
+        setFilters,
+        filters
       }}
     >
       {children}
