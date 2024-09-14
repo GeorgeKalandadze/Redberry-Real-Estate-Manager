@@ -67,7 +67,6 @@ export const AppProvider = ({ children }) => {
     fetchCities();
   }, []);
 
-
   const fetchAgents = async () => {
     try {
       const response = await axiosClient.get("/agents");
@@ -80,7 +79,6 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     fetchAgents();
   }, []);
-
 
   const fetchRealEstateList = async () => {
     try {
@@ -95,13 +93,10 @@ export const AppProvider = ({ children }) => {
     fetchRealEstateList();
   }, []);
 
-
-
   //filtered cities according region
   const filteredCities = listing?.region_id?.value
     ? cities.filter((city) => city.region_id === listing?.region_id?.value)
     : [];
-
 
   //handle input change
   const handleInputChange = (e, entity, setEntity, validateFn) => {
@@ -114,7 +109,6 @@ export const AppProvider = ({ children }) => {
       [name]: errors[name],
     }));
   };
-
 
   //handle image upload
   const handleImageUpload = (
@@ -146,21 +140,32 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // //handle image delete
+  // const handleImageDelete = (entity, setEntity, fieldName = "image") => {
+  //   const updatedEntity = { ...entity, [fieldName]: null };
+  //   setEntity(updatedEntity);
+  //   setValidationErrors((prevErrors) => ({
+  //     ...prevErrors,
+  //     [fieldName]: { size: "invalid", type: "invalid" },
+  //   }));
+  // };
 
   //handle image delete
   const handleImageDelete = (
     entity,
     setEntity,
+    validateFn,
     fieldName = "image"
   ) => {
     const updatedEntity = { ...entity, [fieldName]: {} };
     setEntity(updatedEntity);
+
+    const imageErrors = validateFn(updatedEntity)[fieldName];
     setValidationErrors((prevErrors) => ({
       ...prevErrors,
       [fieldName]: { size: "invalid", type: "invalid" },
     }));
   };
-
 
   //handle region change
   const handleRegionChange = (region) => {
@@ -192,7 +197,6 @@ export const AppProvider = ({ children }) => {
     }));
   };
 
-
   //handle radio change
   const handleRadioChange = (name, value, entity, setEntity, validateFn) => {
     const updatedEntity = { ...entity, [name]: value };
@@ -203,7 +207,6 @@ export const AppProvider = ({ children }) => {
       [name]: errors[name],
     }));
   };
-  
 
   return (
     <AppContext.Provider

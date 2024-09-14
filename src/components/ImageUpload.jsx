@@ -5,11 +5,9 @@ const ImageUpload = ({ label, isValid, handleChange, values, handleImageDelete }
 
   
   const borderColor =
-    isValid?.size && isValid?.type === "valid"
-      ? "border-[#c3c2c8]"
-      : isValid?.size && isValid?.type === "invalid"
+    isValid?.size === "invalid" || isValid?.type === "invalid"
       ? "border-red-500"
-      : "border-[#c3c2c8]";
+      : "border-[#c3c2c8]";;
 
   const backgroundColor =
     isValid === "valid"
@@ -19,6 +17,7 @@ const ImageUpload = ({ label, isValid, handleChange, values, handleImageDelete }
       : "";
 
 
+  console.log(isValid);
   
 
   return (
