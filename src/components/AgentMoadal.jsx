@@ -88,7 +88,7 @@ const AgentModal = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed z-50 inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center backdrop-blur-md"
-      style={{ backdropFilter: "blur(10px)" }}
+      style={{ backdropFilter: "blur(4px)" }}
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.8, y: 50 }}
@@ -96,7 +96,7 @@ const AgentModal = () => {
         exit={{ opacity: 0, scale: 0.8, y: 50 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         className="bg-white rounded-lg shadow-lg p-8 w-[790px] z-50 relative"
-        ref={modalRef} 
+        ref={modalRef}
       >
         <h1 className="text-[32px] font-bold mb-6 text-center">
           აგენტის დამატება
@@ -113,27 +113,27 @@ const AgentModal = () => {
                 onChange={(e) =>
                   handleInputChange(e, agent, setAgent, ValidateAgent)
                 }
-                isValid={validationErrors?.firstName} 
+                isValid={validationErrors?.firstName}
               />
               <InputGroup
                 label="გვარი"
                 type="text"
                 hint="მინიმუმ ორი სიმბოლო"
                 name="lastName"
-                value={agent?.lastName} 
+                value={agent?.lastName}
                 onChange={(e) =>
                   handleInputChange(e, agent, setAgent, ValidateAgent)
                 }
-                isValid={validationErrors?.lastName} 
+                isValid={validationErrors?.lastName}
               />
             </div>
             <div className="w-full flex gap-6">
               <InputGroup
                 label="ელ.ფოსტა"
                 type="email"
-                hint="უნდა იყოს ელ.ფოსტის ფორმატი"
+                hint="გამოიყენეთ @redberry.ge ფოსტა"
                 name="email"
-                value={agent?.email} 
+                value={agent?.email}
                 onChange={(e) =>
                   handleInputChange(e, agent, setAgent, ValidateAgent)
                 }
@@ -142,13 +142,13 @@ const AgentModal = () => {
               <InputGroup
                 label="ტელეფონის ნომერი"
                 type="text"
-                hint="მინიმუმ 9 სიმბოლო"
+                hint="მხოლოდ რიცხვები"
                 name="phoneNumber"
                 value={agent?.phoneNumber}
                 onChange={(e) =>
                   handleInputChange(e, agent, setAgent, ValidateAgent)
                 }
-                isValid={validationErrors?.phoneNumber} 
+                isValid={validationErrors?.phoneNumber}
               />
             </div>
 

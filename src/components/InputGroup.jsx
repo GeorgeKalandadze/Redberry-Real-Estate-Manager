@@ -52,7 +52,7 @@ const InputGroup = ({ label, type, hint, name, value, onChange, isValid }) => {
               ? "text-green-500"
               : isValid === "invalid"
               ? "text-red-500"
-              : "text-[#85858D]"
+              : "text-[#021526]"
           }`}
         >
           {hint}

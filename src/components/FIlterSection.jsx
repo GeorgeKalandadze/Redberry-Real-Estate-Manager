@@ -208,7 +208,7 @@ const FilterSection = ({ filters, setFilters, closeFilterSection }) => {
         applyFilters={applyTempFilters}
         closeFilterSection={closeFilterSection}
       >
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid grid-cols-3 gap-8">
           {regions.map((region) => (
             <CustomCheckbox
               key={region.id}

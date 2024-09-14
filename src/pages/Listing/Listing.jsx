@@ -120,8 +120,6 @@ const Listing = () => {
               გამოქვეყნების თარიღი {formatDate(listingDetails?.created_at)}
             </p>
           </div>
-
-          {/* Right Side: Details Section */}
           <div className="w-full lg:w-1/2 flex flex-col gap-4 justify-between">
             <div className="flex flex-col gap-4">
               <h1 className="text-3xl font-bold text-[48px]">
@@ -150,8 +148,6 @@ const Listing = () => {
             <div className="text-[16px] w-[500px] text-[#808A93] leading-relaxed">
               <p>{listingDetails?.description}</p>
             </div>
-
-            {/* Agent Section */}
             <div className="flex flex-col items-start gap-4 p-4 border rounded-lg ">
               <div className="flex gap-2 justify-center items-center">
                 <img
@@ -224,22 +220,23 @@ const Listing = () => {
               className="w-full"
             >
               {similarProperties.map((property) => (
-                <SwiperSlide key={property.id} onClick={scrollToTop}>
-                  <Card
-                    key={property.id}
-                    image={property.image}
-                    price={property.price}
-                    address={property.address}
-                    beds={property.beds}
-                    area={property.area}
-                    mailIndex={property.mailIndex}
-                    label={property.label}
-                  />
-                </SwiperSlide>
+                
+                  <SwiperSlide key={property.id} onClick={scrollToTop}>
+                    <Link to={`/listing/${property.id}`}>
+                    <Card
+                      key={property.id}
+                      image={property.image}
+                      price={property.price}
+                      address={property.address}
+                      beds={property.beds}
+                      area={property.area}
+                      mailIndex={property.mailIndex}
+                      label={property.label}
+                    />
+                    </Link>
+                  </SwiperSlide>
               ))}
             </Swiper>
-
-            {/* Next Button */}
             <button
               className="absolute right-[-50px] z-10 transform rotate-180"
               onClick={goToNextSlide}

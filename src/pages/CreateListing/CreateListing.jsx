@@ -114,7 +114,7 @@ const CreateListing = () => {
       <div className="flex justify-center">
         <div className="w-[790px] flex gap-8 flex-col items-center">
           <h1 className="text-[32px] font-bold ">ლისტინგის დამატება</h1>
-          <form className="w-full flex flex-col gap-12" onSubmit={handleSubmit}>
+          <form className="w-full flex flex-col gap-16" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2">
               <h2 className="text-[16px] font-bold">გარიგების ტიპი</h2>
               <CustomRadio
@@ -163,7 +163,7 @@ const CreateListing = () => {
                       ? "text-green-500"
                       : validationErrors?.is_rental === "invalid"
                       ? "text-red-500"
-                      : "text-[#85858D]"
+                      : "text-[#021526]"
                   }`}
                 >
                   აირჩიეთ გარიგების ტიპი
@@ -254,7 +254,7 @@ const CreateListing = () => {
                 <InputGroup
                   label="საძინებლების რაოდენობა"
                   type="text"
-                  hint="მინიმუმ ერთი საძინებელი"
+                  hint="მხოლოდ რიცხვები"
                   name="bedrooms"
                   value={listing?.bedrooms}
                   onChange={(e) =>
