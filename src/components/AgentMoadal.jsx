@@ -21,7 +21,6 @@ const AgentModal = () => {
     fetchAgents,
   } = useGlobalContext();
 
-  // Using the hook to detect click outside
   const modalRef = useClickOutside( () =>
     setIsAgentModalOpen(false)
   );
@@ -97,7 +96,7 @@ const AgentModal = () => {
         exit={{ opacity: 0, scale: 0.8, y: 50 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
         className="bg-white rounded-lg shadow-lg p-8 w-[790px] z-50 relative"
-        ref={modalRef} // Attach the ref to the modal div
+        ref={modalRef} 
       >
         <h1 className="text-[32px] font-bold mb-6 text-center">
           აგენტის დამატება
@@ -114,18 +113,18 @@ const AgentModal = () => {
                 onChange={(e) =>
                   handleInputChange(e, agent, setAgent, ValidateAgent)
                 }
-                isValid={validationErrors?.firstName} // Validation status
+                isValid={validationErrors?.firstName} 
               />
               <InputGroup
                 label="გვარი"
                 type="text"
                 hint="მინიმუმ ორი სიმბოლო"
                 name="lastName"
-                value={agent?.lastName} // Bind the agent values
+                value={agent?.lastName} 
                 onChange={(e) =>
                   handleInputChange(e, agent, setAgent, ValidateAgent)
                 }
-                isValid={validationErrors?.lastName} // Validation status
+                isValid={validationErrors?.lastName} 
               />
             </div>
             <div className="w-full flex gap-6">
@@ -134,7 +133,7 @@ const AgentModal = () => {
                 type="email"
                 hint="უნდა იყოს ელ.ფოსტის ფორმატი"
                 name="email"
-                value={agent?.email} // Bind the agent values
+                value={agent?.email} 
                 onChange={(e) =>
                   handleInputChange(e, agent, setAgent, ValidateAgent)
                 }
@@ -149,7 +148,7 @@ const AgentModal = () => {
                 onChange={(e) =>
                   handleInputChange(e, agent, setAgent, ValidateAgent)
                 }
-                isValid={validationErrors?.phoneNumber} // Validation status
+                isValid={validationErrors?.phoneNumber} 
               />
             </div>
 

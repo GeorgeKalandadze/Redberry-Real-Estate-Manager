@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import useClickOutside from "../hooks/useClickOutside";
 
 const DeleteListingModal = ({ isOpen, onClose, onDelete }) => {
-  // Use the hook to detect clicks outside the modal
   const modalRef = useClickOutside(onClose);
 
   if (!isOpen) return null;
@@ -20,7 +19,7 @@ const DeleteListingModal = ({ isOpen, onClose, onDelete }) => {
         animate={{ scale: 1 }}
         exit={{ scale: 0.8 }}
         className="bg-white rounded-lg shadow-lg px-30 py-6 w-[400px] relative"
-        ref={modalRef} // Attach the ref to the modal div
+        ref={modalRef} 
       >
         <button
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-800"
@@ -34,7 +33,7 @@ const DeleteListingModal = ({ isOpen, onClose, onDelete }) => {
         <div className="flex justify-center gap-4">
           <button
             className="text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-4 py-2 rounded-xl"
-            onClick={onClose} // Fix typo: onclose -> onClose
+            onClick={onClose} 
           >
             გაუქმება
           </button>

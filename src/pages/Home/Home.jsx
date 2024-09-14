@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import GuestLayout from "../../layouts/GuestLayout";
 import Card from "../../components/Card";
-import FilterSection from "../../components/FilterSection";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../contexts/Context";
-import { useSessionStorage } from "../../hooks/useSessionStorage"; // Import the hook
+import { useSessionStorage } from "../../hooks/useSessionStorage"; 
 import FilterSummary from "../../components/FilterSummary";
+import FilterSection from "../../components/FIlterSection";
 
 const Home = () => {
   const { setIsAgentModalOpen, realEstateList } = useGlobalContext();
@@ -77,7 +77,6 @@ const Home = () => {
 
 useEffect(() => {
   const filteredRealEstateList = realEstateList.filter((property) => {
-    // Check if there are any active filters
     const noFiltersApplied =
       filters.regions.length === 0 &&
       !filters.bedrooms &&
@@ -86,21 +85,18 @@ useEffect(() => {
       !filters.area.from &&
       !filters.area.to;
 
-    // If no filters are applied, return all properties
     if (noFiltersApplied) {
       return true;
     }
 
     let matchesAtLeastOneFilter = false;
 
-    // Check if the region filter is active and matches
     if (filters.regions.length > 0) {
       matchesAtLeastOneFilter = filters.regions.includes(
         property.city.region.name
       );
     }
 
-    // Check if the bedrooms filter is active and matches
     if (filters.bedrooms) {
       matchesAtLeastOneFilter =
         matchesAtLeastOneFilter ||
