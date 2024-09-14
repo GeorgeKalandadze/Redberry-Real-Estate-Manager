@@ -8,6 +8,7 @@ import ImageUpload from "../../components/ImageUpload";
 import { useGlobalContext } from "../../contexts/Context";
 import { ValidateListing } from "../../validation/validation";
 import axiosClient from "../../config/axiosClient";
+import { useNavigate } from "react-router-dom";
 
 const CreateListing = () => {
   const {
@@ -43,6 +44,8 @@ const CreateListing = () => {
       agent_id: errors.agent_id,
     }));
   };
+
+  const navigate = useNavigate();
 
 
   const handleSubmit = async (e) => {
