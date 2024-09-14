@@ -29,6 +29,7 @@ const Listing = () => {
   const {  realEstateList, fetchRealEstateList } =
     useGlobalContext();
 
+    
   useEffect(() => {
     const fetchListingDetails = async () => {
       try {
@@ -58,7 +59,6 @@ const Listing = () => {
       );
     }
   };  
-
 
   const goToNextSlide = () => {
     if (swiper !== null) {
