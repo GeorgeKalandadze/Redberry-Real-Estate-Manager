@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import ArrowDownIcon from "../assets/arrow-down.png";
 import { useGlobalContext } from "../contexts/Context";
 
-// Custom Checkbox Component
 const CustomCheckbox = ({ label, checked, onChange }) => (
   <label className="flex items-center cursor-pointer space-x-2">
     <div
@@ -33,7 +32,6 @@ const CustomCheckbox = ({ label, checked, onChange }) => (
   </label>
 );
 
-// Input Field Component
 const FilterInput = ({ value, placeholder, onChange, icon, hasError }) => {
   return (
     <div className="relative">
@@ -55,7 +53,6 @@ const FilterInput = ({ value, placeholder, onChange, icon, hasError }) => {
   );
 };
 
-// Static List Component for Prices/Areas
 const StaticValueList = ({ values, onSelect }) => (
   <ul className="space-y-2">
     {values.map((value) => (
@@ -109,7 +106,6 @@ const FilterItem = React.forwardRef(
   )
 );
 
-// Main FilterSection Component
 const FilterSection = ({ filters, setFilters, closeFilterSection }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [tempFilters, setTempFilters] = useState(filters);
@@ -165,6 +161,15 @@ const FilterSection = ({ filters, setFilters, closeFilterSection }) => {
   };
 
   const applyTempFilters = () => {
+    if (
+      validationErrors.priceFromError ||
+      validationErrors.priceToError ||
+      validationErrors.areaFromError ||
+      validationErrors.areaToError
+    ) {
+      return;
+    }
+
     setFilters(tempFilters);
     setOpenDropdown(null);
   };

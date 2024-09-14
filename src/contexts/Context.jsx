@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useSessionStorage } from "../hooks/useSessionStorage";
 import { ValidateListing } from "../validation/validation";
 import axiosClient from "../config/axiosClient";
-import { useNavigate } from "react-router-dom";
 
 const initialListingInfo = {
   address: "",
@@ -33,7 +32,7 @@ export const AppProvider = ({ children }) => {
     "listing",
     initialListingInfo
   );
-  const [agent, setAgent] = useSessionStorage("agent", initialAgentInfo); // Re-added agent state
+  const [agent, setAgent] = useSessionStorage("agent", initialAgentInfo);
   const [validationErrors, setValidationErrors] = useSessionStorage(
     "errors",
     {}
@@ -41,8 +40,6 @@ export const AppProvider = ({ children }) => {
   const [regions, setRegions] = useState([]);
   const [cities, setCities] = useState([]);
   const [agents, setAgents] = useState([]);
-  const [selectedRegion, setSelectedRegion] = useState(null);
-  const [selectedCity, setSelectedCity] = useState(null);
   const [isAgentModalOpen, setIsAgentModalOpen] = useState(false);
   const [realEstateList, setRealEstateList] = useState([]);
 
@@ -98,15 +95,19 @@ export const AppProvider = ({ children }) => {
     fetchRealEstateList();
   }, []);
 
+
+
+  //filtered cities according region
   const filteredCities = listing?.region_id?.value
     ? cities.filter((city) => city.region_id === listing?.region_id?.value)
     : [];
 
+
+  //handle input change
   const handleInputChange = (e, entity, setEntity, validateFn) => {
     const { name, value } = e.target;
     const updatedEntity = { ...entity, [name]: value };
     const errors = validateFn(updatedEntity);
-
     setEntity(updatedEntity);
     setValidationErrors((prevErrors) => ({
       ...prevErrors,
@@ -114,6 +115,8 @@ export const AppProvider = ({ children }) => {
     }));
   };
 
+
+  //handle image upload
   const handleImageUpload = (
     event,
     entity,
@@ -143,10 +146,11 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+
+  //handle image delete
   const handleImageDelete = (
     entity,
     setEntity,
-    validateFn,
     fieldName = "image"
   ) => {
     const updatedEntity = { ...entity, [fieldName]: {} };
@@ -157,16 +161,15 @@ export const AppProvider = ({ children }) => {
     }));
   };
 
+
+  //handle region change
   const handleRegionChange = (region) => {
     const updatedListing = {
       ...listing,
       region_id: region || null,
       city_id: null,
     };
-    setSelectedRegion(region);
-    setSelectedCity(null);
     setListing(updatedListing);
-
     const errors = ValidateListing(updatedListing);
     setValidationErrors((prevErrors) => ({
       ...prevErrors,
@@ -175,14 +178,13 @@ export const AppProvider = ({ children }) => {
     }));
   };
 
+  //handle city change
   const handleCityChange = (city) => {
     const updatedListing = {
       ...listing,
       city_id: city,
     };
-    setSelectedCity(city);
     setListing(updatedListing);
-
     const errors = ValidateListing(updatedListing);
     setValidationErrors((prevErrors) => ({
       ...prevErrors,
@@ -190,6 +192,8 @@ export const AppProvider = ({ children }) => {
     }));
   };
 
+
+  //handle radio change
   const handleRadioChange = (name, value, entity, setEntity, validateFn) => {
     const updatedEntity = { ...entity, [name]: value };
     const errors = validateFn(updatedEntity);
@@ -215,7 +219,6 @@ export const AppProvider = ({ children }) => {
         handleCityChange,
         filteredCities,
         regions,
-        selectedRegion,
         cities,
         agents,
         setListing,

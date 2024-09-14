@@ -48,8 +48,6 @@ const Listing = () => {
     try {
       const response = await axiosClient.delete(`/real-estates/${id}`);
       if (response.status === 200) {
-        // const updatedList = realEstateList.filter((item) => item.id !== id);
-        // setRealEstateList([...updatedList]);
         fetchRealEstateList();
         navigate("/"); 
       }
@@ -87,14 +85,6 @@ const Listing = () => {
     return `${day}/${month}/${year}`;
   };
 
-  // const similarProperties = realEstateList.filter((property) => {
-  //   return (
-  //     listingDetails &&
-  //     property.city.region.name === listingDetails.city.region.name
-  //   );
-  // });
-
-
   const similarProperties = realEstateList.filter((property) => {
     return (
       listingDetails &&
@@ -103,9 +93,9 @@ const Listing = () => {
   });
 
 
-  console.log(realEstateList);
-  console.log(listingDetails);
-  
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
 
   const rentalLabel = listingDetails?.is_rental === 1 ? "ქირავდება" : "იყიდება";
@@ -113,7 +103,7 @@ const Listing = () => {
   return (
     <GuestLayout>
       <div className="flex flex-col justify-center py-12">
-        <Link to='/' className="mb-6">
+        <Link to="/" className="mb-6">
           <img src={ArrowIcon} alt="Next" />
         </Link>
         <div className=" flex flex-col lg:flex-row gap-16 w-full">
@@ -234,7 +224,7 @@ const Listing = () => {
               className="w-full"
             >
               {similarProperties.map((property) => (
-                <SwiperSlide key={property.id}>
+                <SwiperSlide key={property.id} onClick={scrollToTop}>
                   <Card
                     key={property.id}
                     image={property.image}
