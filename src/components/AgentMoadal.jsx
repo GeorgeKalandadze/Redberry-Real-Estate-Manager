@@ -31,7 +31,10 @@ const AgentModal = () => {
     e.preventDefault();
 
     const validation = ValidateAgent(agent);
-    setValidationErrors(validation);
+    setValidationErrors((prevErrors) => ({
+      ...prevErrors,
+      ...validation,
+    }));
 
     // Check if any of the validation fields have "invalid" errors
     const hasInvalidFields =
@@ -61,27 +64,15 @@ const AgentModal = () => {
       });
 
       if (response.status === 200 || response.status === 201) {
-        setValidationErrors((prevErrors) => {
-          const {
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            avatar,
-            ...otherErrors
-          } = prevErrors;
-          return {
-            ...otherErrors,
-            firstName: "",
-            lastName: "",
-            email: "",
-            phoneNumber: "",
-            avatar: {
-              size: "",
-              type: "",
-            },
-          };
-        });
+        // Clear only agent-specific errors, keeping other errors intact
+        setValidationErrors((prevErrors) => ({
+          ...prevErrors,
+          firstName: "",
+          lastName: "",
+          email: "",
+          phoneNumber: "",
+          avatar: { size: "", type: "" },
+        }));
 
         setAgent({
           firstName: "",
@@ -98,6 +89,8 @@ const AgentModal = () => {
       console.error("Error adding agent:", error.response?.data || error);
     }
   };
+
+
 
 
 
