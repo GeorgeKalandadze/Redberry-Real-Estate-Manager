@@ -33,6 +33,7 @@ const AgentModal = () => {
     const validation = ValidateAgent(agent);
     setValidationErrors(validation);
 
+    // Check if any of the validation fields have "invalid" errors
     const hasInvalidFields =
       Object.values(validation).some((error) => error === "invalid") ||
       validation.avatar.size === "invalid" ||
@@ -59,28 +60,47 @@ const AgentModal = () => {
         },
       });
 
-      setAgent({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-        avatar: {},
-      });
+      if (response.status === 200 || response.status === 201) {
+        setValidationErrors((prevErrors) => {
+          const {
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+            avatar,
+            ...otherErrors
+          } = prevErrors;
+          return {
+            ...otherErrors,
+            firstName: "",
+            lastName: "",
+            email: "",
+            phoneNumber: "",
+            avatar: {
+              size: "",
+              type: "",
+            },
+          };
+        });
 
-      setValidationErrors({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-        avatar: { size: "", type: "" },
-      });
+        setAgent({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phoneNumber: "",
+          avatar: {},
+        });
 
-      setIsAgentModalOpen(false);
-      fetchAgents();
+        setIsAgentModalOpen(false);
+        fetchAgents();
+      }
     } catch (error) {
       console.error("Error adding agent:", error.response?.data || error);
     }
   };
+
+
+
 
   return (
     <motion.div
@@ -175,7 +195,7 @@ const AgentModal = () => {
             </button>
             <button
               type="submit"
-              className=" bg-[#F93B1D] text-white   text-[16px] font-medium px-6 py-4 rounded-xl"
+              className="bg-[#F93B1D] hover:bg-[#DF3014] text-white text-[16px] font-medium px-6 py-4 rounded-xl transition duration-300 ease-in-out"
             >
               დაამატე აგენტი
             </button>

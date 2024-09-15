@@ -106,7 +106,7 @@ const Home = () => {
           <div className="flex items-center gap-4">
             <Link
               to="/create-listing"
-              className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl"
+              className="bg-[#F93B1D] hover:bg-[#DF3014] text-white text-[16px] font-medium px-6 py-4 rounded-xl transition duration-300 ease-in-out"
             >
               + ლისტინგის დამატება
             </Link>
@@ -123,26 +123,26 @@ const Home = () => {
           removeFilter={handleRemoveFilter}
           clearAllFilters={clearAllFilters}
         />
-          {filteredRealEstateList.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredRealEstateList.map((property) => (
-                <Link to={`listing/${property.id}`} key={property.id}>
-                  <Card
-                    image={property.image}
-                    price={property.price}
-                    address={property.address}
-                    beds={property.bedrooms}
-                    area={property.area}
-                    mailIndex={property.zip_code}
-                    label={property.label}
-                    isRental={property.is_rental}
-                  />
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="w-full">აღნიშნული მონაცემებით განცხადება არ იძებნება</p>
-          )}
+        {filteredRealEstateList.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredRealEstateList.map((property) => (
+              <Link to={`listing/${property.id}`} key={property.id}>
+                <Card
+                  image={property.image}
+                  price={property.price}
+                  address={property.address}
+                  beds={property.bedrooms}
+                  area={property.area}
+                  mailIndex={property.zip_code}
+                  label={property.label}
+                  isRental={property.is_rental}
+                />
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="w-full">აღნიშნული მონაცემებით განცხადება არ იძებნება</p>
+        )}
       </div>
     </GuestLayout>
   );
