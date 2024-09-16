@@ -36,7 +36,6 @@ const AgentModal = () => {
       ...validation,
     }));
 
-    // Check if any of the validation fields have "invalid" errors
     const hasInvalidFields =
       Object.values(validation).some((error) => error === "invalid") ||
       validation.avatar.size === "invalid" ||
@@ -63,8 +62,7 @@ const AgentModal = () => {
         },
       });
 
-      if (response.status === 200 || response.status === 201) {
-        // Clear only agent-specific errors, keeping other errors intact
+      if (response.status === 201) {
         setValidationErrors((prevErrors) => ({
           ...prevErrors,
           firstName: "",

@@ -47,7 +47,6 @@ const CustomSelect = ({ label, options, placeholder, onChange, value, isValid })
          : "#c3c2c8",
    };
 
-   console.log(label);
    
 
   return (

@@ -15,9 +15,6 @@ const ImageUpload = ({ label, isValid, handleChange, values, handleImageDelete }
       : isValid === "invalid"
       ? "bg-[#FAF2F3]"
       : "";
-
-
-  console.log(isValid);
   
 
   return (

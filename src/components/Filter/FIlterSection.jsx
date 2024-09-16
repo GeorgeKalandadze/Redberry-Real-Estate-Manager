@@ -399,21 +399,26 @@ const FilterSection = () => {
     areaToError: false,
   });
   const dropdownRefs = useRef([]);
-  
 
   const staticPrices = ["50,000", "100,000", "150,000", "200,000", "300,000"];
-  const staticAreas = ["50", "100", "150", "200", "300"];
+  const staticAreas = ["50,000", "100,000", "150,000", "200,000", "300,000"];
 
   useEffect(() => {
     setTempFilters(filters);
   }, [filters]);
 
   const handleTempFilterChange = (filterKey, value) => {
+    // Remove commas from the value and parse it as a float
+    const parsedValue = {
+      from: value.from ? parseFloat(value.from.replace(/,/g, "")) : 0,
+      to: value.to ? parseFloat(value.to.replace(/,/g, "")) : Infinity,
+    };
+
     const newFilters = { ...tempFilters, [filterKey]: value };
 
     if (filterKey === "area") {
-      const min = parseFloat(newFilters.area.from || 0);
-      const max = parseFloat(newFilters.area.to || Infinity);
+      const min = parsedValue.from || 0;
+      const max = parsedValue.to || Infinity;
       setValidationErrors({
         ...validationErrors,
         areaFromError: min > max,
@@ -422,8 +427,8 @@ const FilterSection = () => {
     }
 
     if (filterKey === "price") {
-      const minPrice = parseFloat(newFilters.price.from || 0);
-      const maxPrice = parseFloat(newFilters.price.to || Infinity);
+      const minPrice = parsedValue.from || 0;
+      const maxPrice = parsedValue.to || Infinity;
       setValidationErrors({
         ...validationErrors,
         priceFromError: minPrice > maxPrice,
@@ -511,24 +516,24 @@ const FilterSection = () => {
       >
         <div className="grid grid-cols-2 gap-4">
           <FilterInput
-            value={tempFilters.price.from}
+            value={tempFilters.price.from?.toLocaleString() || ""}
             placeholder="დან"
             onChange={(e) =>
               handleTempFilterChange("price", {
                 ...tempFilters.price,
-                from: e.target.value,
+                from: e.target.value.replace(/,/g, ""), // Remove commas from input
               })
             }
             icon="₾"
             hasError={validationErrors.priceFromError}
           />
           <FilterInput
-            value={tempFilters.price.to}
+            value={tempFilters.price.to?.toLocaleString() || ""}
             placeholder="მდე"
             onChange={(e) =>
               handleTempFilterChange("price", {
                 ...tempFilters.price,
-                to: e.target.value,
+                to: e.target.value.replace(/,/g, ""), // Remove commas from input
               })
             }
             icon="₾"
@@ -550,7 +555,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("price", {
                   ...tempFilters.price,
-                  from: value,
+                  from: value.replace(/,/g, ""), // Remove commas from static value
                 })
               }
             />
@@ -562,7 +567,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("price", {
                   ...tempFilters.price,
-                  to: value,
+                  to: value.replace(/,/g, ""), // Remove commas from static value
                 })
               }
             />
@@ -579,24 +584,24 @@ const FilterSection = () => {
       >
         <div className="grid grid-cols-2 gap-4">
           <FilterInput
-            value={tempFilters.area.from}
+            value={tempFilters.area.from?.toLocaleString() || ""}
             placeholder="დან"
             onChange={(e) =>
               handleTempFilterChange("area", {
                 ...tempFilters.area,
-                from: e.target.value,
+                from: e.target.value.replace(/,/g, ""), // Remove commas from input
               })
             }
             icon="მ²"
             hasError={validationErrors.areaFromError}
           />
           <FilterInput
-            value={tempFilters.area.to}
+            value={tempFilters.area.to?.toLocaleString() || ""}
             placeholder="მდე"
             onChange={(e) =>
               handleTempFilterChange("area", {
                 ...tempFilters.area,
-                to: e.target.value,
+                to: e.target.value.replace(/,/g, ""), // Remove commas from input
               })
             }
             icon="მ²"
@@ -617,7 +622,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("area", {
                   ...tempFilters.area,
-                  from: value,
+                  from: value.replace(/,/g, ""), // Remove commas from static value
                 })
               }
             />
@@ -629,7 +634,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("area", {
                   ...tempFilters.area,
-                  to: value,
+                  to: value.replace(/,/g, ""), // Remove commas from static value
                 })
               }
             />
@@ -658,4 +663,5 @@ const FilterSection = () => {
 };
 
 export default FilterSection;
+
 

@@ -318,7 +318,7 @@ const CreateListing = () => {
               </button>
               <button
                 type="submit"
-                className="bg-[#F93B1D] text-white text-[16px] font-medium px-6 py-4 rounded-xl"
+                className="bg-[#F93B1D] hover:bg-[#DF3014] text-white text-[16px] font-medium px-6 py-4 rounded-xl transition duration-300 ease-in-out"
               >
                 დაამატე ლისტინგი
               </button>

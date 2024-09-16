@@ -33,9 +33,9 @@ const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
           </div>
         ))}
 
-      {(filters.price.from || filters.price.to) && (
+      {(filters?.price?.from || filters?.price?.to) && (
         <div className="inline-flex items-center px-[10px] py-[4px] border border-[#DBDBDB] rounded-full text-sm text-[#354451]">
-          {formatPrice(filters.price.from, filters.price.to)}
+          {formatPrice(filters?.price?.from, filters?.price?.to)}
           <button
             className="ml-2 text-red-500 hover:text-red-700"
             onClick={() => removeFilter("price")}
@@ -45,9 +45,9 @@ const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
         </div>
       )}
 
-      {(filters.area.from || filters.area.to) && (
+      {(filters?.area?.from || filters?.area?.to) && (
         <div className="inline-flex items-center px-[10px] py-[4px] border border-[#DBDBDB] rounded-full text-sm text-[#354451]">
-          {formatArea(filters.area.from, filters.area.to)}
+          {formatArea(filters?.area?.from, filters?.area?.to)}
           <button
             className="ml-2 text-red-500 hover:text-red-700"
             onClick={() => removeFilter("area")}
