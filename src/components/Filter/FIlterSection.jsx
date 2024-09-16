@@ -448,11 +448,23 @@ const FilterSection = () => {
   };
 
   const applyTempFilters = () => {
+    const isPriceDropdownOpen = dropdownRefs.current["price"]?.contains(
+      document.activeElement
+    );
+    const isAreaDropdownOpen = dropdownRefs.current["area"]?.contains(
+      document.activeElement
+    );
+
     if (
-      validationErrors.priceFromError ||
-      validationErrors.priceToError ||
-      validationErrors.areaFromError ||
-      validationErrors.areaToError
+      isPriceDropdownOpen &&
+      (validationErrors.priceFromError || validationErrors.priceToError)
+    ) {
+      return;
+    }
+
+    if (
+      isAreaDropdownOpen &&
+      (validationErrors.areaFromError || validationErrors.areaToError)
     ) {
       return;
     }
@@ -460,6 +472,7 @@ const FilterSection = () => {
     setFilters(tempFilters);
     setOpenDropdown(null);
   };
+
 
   const toggleDropdown = (dropdownName) => {
     if (openDropdown === dropdownName) {
@@ -484,6 +497,9 @@ const FilterSection = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [openDropdown]);
+
+  console.log(dropdownRefs.current["area"]);
+  
 
   return (
     <div className="flex px-2 py-2 gap-4 rounded-lg border-[#DBDBDB] border">
