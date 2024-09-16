@@ -21,9 +21,32 @@ const AgentModal = () => {
     fetchAgents,
   } = useGlobalContext();
 
-  const modalRef = useClickOutside( () =>
-    setIsAgentModalOpen(false)
-  );
+  const clearAgentErrors = () => {
+    setValidationErrors((prevErrors) => ({
+      ...prevErrors,
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      avatar: { size: "", type: "" },
+    }));
+  };
+
+  const closeModal = () => {
+    clearAgentErrors();
+    setAgent({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      avatar: {},
+    });
+    setIsAgentModalOpen(false);
+  };
+
+  const modalRef = useClickOutside(() => {
+    closeModal();
+  });
 
   if (!isAgentModalOpen) return null;
 
@@ -87,11 +110,6 @@ const AgentModal = () => {
       console.error("Error adding agent:", error.response?.data || error);
     }
   };
-
-
-
-
-
 
   return (
     <motion.div
@@ -179,7 +197,7 @@ const AgentModal = () => {
           <div className="flex justify-end items-center gap-4">
             <button
               type="button"
-              onClick={() => setIsAgentModalOpen(false)}
+              onClick={closeModal}
               className="border border-[#F93B1D] text-[#F93B1D]  text-[16px] font-medium px-6 py-4 rounded-xl"
             >
               გაუქმება

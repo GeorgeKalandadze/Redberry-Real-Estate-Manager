@@ -54,7 +54,6 @@ const ImageUpload = ({
         )}
       </div>
 
-      {/* Render appropriate error messages based on validation */}
       {!values && isValid?.size === "invalid" && (
         <p className="text-red-500 text-sm mt-1">
           სურათი არ არის ატვირთული. გთხოვთ ატვირთოთ სურათი.
