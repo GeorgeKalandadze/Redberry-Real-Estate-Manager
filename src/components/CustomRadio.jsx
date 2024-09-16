@@ -15,7 +15,7 @@ const CustomRadio = ({ options, name, selectedValue, onChange, isValid }) => {
             className="hidden"
           />
           <span
-            className={`w-4 h-4 rounded-full border-2 border-gray-400 flex items-center justify-center ${
+            className={`w-4 h-4 rounded-full border-2 border-[#021526] flex items-center justify-center ${
               selectedValue === option.value ? "border-[#021526]" : ""
             }`}
           >
@@ -26,7 +26,6 @@ const CustomRadio = ({ options, name, selectedValue, onChange, isValid }) => {
           <span className="text-sm text-[#021526]">{option.label}</span>
         </label>
       ))}
-      
     </div>
   );
 };

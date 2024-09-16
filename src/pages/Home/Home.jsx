@@ -90,6 +90,8 @@ const Home = () => {
       area: { from: "", to: "" },
     });
   };
+
+  
   
   return (
     <GuestLayout>
@@ -133,6 +135,7 @@ const Home = () => {
                   mailIndex={property.zip_code}
                   label={property.label}
                   isRental={property.is_rental}
+                  city={property?.city?.name}
                 />
               </Link>
             ))}

@@ -99,6 +99,7 @@ const Listing = () => {
 
 
   const rentalLabel = listingDetails?.is_rental === 1 ? "ქირავდება" : "იყიდება";
+  
 
   return (
     <GuestLayout>
@@ -128,7 +129,9 @@ const Listing = () => {
               <div className="flex flex-col gap-2 text-[#808A93] text-[24px]">
                 <div className="flex gap-2 items-center">
                   <img src={LocationIcon} alt="Location" />
-                  <p>{listingDetails?.address} 53</p>
+                  <p>
+                    {listingDetails?.city?.name}, {listingDetails?.address}
+                  </p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <img src={SpaceIcon} alt="Space" />
@@ -185,14 +188,12 @@ const Listing = () => {
           </div>
         </div>
 
-        {/* Similar Listings Section */}
         <div className="w-full mt-20">
           <h2 className="text-[30px] font-bold text-left">
             ბინები მსგავს ლოკაციაზე
           </h2>
 
           <div className="relative flex justify-center items-center py-8">
-            {/* Previous Button */}
             <button
               className="absolute left-[-50px] z-10  "
               onClick={goToPrevSlide}
@@ -220,9 +221,8 @@ const Listing = () => {
               className="w-full"
             >
               {similarProperties.map((property) => (
-                
-                  <SwiperSlide key={property.id} onClick={scrollToTop}>
-                    <Link to={`/listing/${property.id}`}>
+                <SwiperSlide key={property.id} onClick={scrollToTop}>
+                  <Link to={`/listing/${property.id}`}>
                     <Card
                       key={property.id}
                       image={property.image}
@@ -232,9 +232,10 @@ const Listing = () => {
                       area={property.area}
                       mailIndex={property.mailIndex}
                       label={property.label}
+                      city={property?.city?.name}
                     />
-                    </Link>
-                  </SwiperSlide>
+                  </Link>
+                </SwiperSlide>
               ))}
             </Swiper>
             <button

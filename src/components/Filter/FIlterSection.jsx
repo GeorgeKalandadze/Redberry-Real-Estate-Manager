@@ -513,34 +513,37 @@ const FilterSection = () => {
         ref={(el) => (dropdownRefs.current["price"] = el)}
         applyFilters={applyTempFilters}
       >
-        <div className="grid grid-cols-2 gap-4">
-          <FilterInput
-            value={tempFilters.price.from?.toLocaleString() || ""}
-            placeholder="დან"
-            onChange={(e) =>
-              handleTempFilterChange("price", {
-                ...tempFilters.price,
-                from: e.target.value.replace(/,/g, ""), 
-              })
-            }
-            icon="₾"
-            hasError={validationErrors.priceFromError}
-          />
-          <FilterInput
-            value={tempFilters.price.to?.toLocaleString() || ""}
-            placeholder="მდე"
-            onChange={(e) =>
-              handleTempFilterChange("price", {
-                ...tempFilters.price,
-                to: e.target.value.replace(/,/g, ""), 
-              })
-            }
-            icon="₾"
-            hasError={validationErrors.priceToError}
-          />
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-4">
+            <FilterInput
+              value={tempFilters.price.from?.toLocaleString() || ""}
+              placeholder="დან"
+              onChange={(e) =>
+                handleTempFilterChange("price", {
+                  ...tempFilters.price,
+                  from: e.target.value.replace(/,/g, ""),
+                })
+              }
+              icon="₾"
+              hasError={validationErrors.priceFromError}
+            />
+            <FilterInput
+              value={tempFilters.price.to?.toLocaleString() || ""}
+              placeholder="მდე"
+              onChange={(e) =>
+                handleTempFilterChange("price", {
+                  ...tempFilters.price,
+                  to: e.target.value.replace(/,/g, ""),
+                })
+              }
+              icon="₾"
+              hasError={validationErrors.priceToError}
+            />
+          </div>
+
           {(validationErrors.priceFromError ||
             validationErrors.priceToError) && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className=" min-w-max text-red-500 text-sm mt-1">
               ჩაწერეთ ვალიდური მონაცემები
             </p>
           )}
@@ -554,7 +557,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("price", {
                   ...tempFilters.price,
-                  from: value.replace(/,/g, ""), 
+                  from: value.replace(/,/g, ""),
                 })
               }
             />
@@ -566,7 +569,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("price", {
                   ...tempFilters.price,
-                  to: value.replace(/,/g, ""), 
+                  to: value.replace(/,/g, ""),
                 })
               }
             />
@@ -581,33 +584,35 @@ const FilterSection = () => {
         ref={(el) => (dropdownRefs.current["area"] = el)}
         applyFilters={applyTempFilters}
       >
-        <div className="grid grid-cols-2 gap-4">
-          <FilterInput
-            value={tempFilters.area.from?.toLocaleString() || ""}
-            placeholder="დან"
-            onChange={(e) =>
-              handleTempFilterChange("area", {
-                ...tempFilters.area,
-                from: e.target.value.replace(/,/g, ""), 
-              })
-            }
-            icon="მ²"
-            hasError={validationErrors.areaFromError}
-          />
-          <FilterInput
-            value={tempFilters.area.to?.toLocaleString() || ""}
-            placeholder="მდე"
-            onChange={(e) =>
-              handleTempFilterChange("area", {
-                ...tempFilters.area,
-                to: e.target.value.replace(/,/g, ""), 
-              })
-            }
-            icon="მ²"
-            hasError={validationErrors.areaToError}
-          />
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-4">
+            <FilterInput
+              value={tempFilters.area.from?.toLocaleString() || ""}
+              placeholder="დან"
+              onChange={(e) =>
+                handleTempFilterChange("area", {
+                  ...tempFilters.area,
+                  from: e.target.value.replace(/,/g, ""),
+                })
+              }
+              icon="მ²"
+              hasError={validationErrors.areaFromError}
+            />
+            <FilterInput
+              value={tempFilters.area.to?.toLocaleString() || ""}
+              placeholder="მდე"
+              onChange={(e) =>
+                handleTempFilterChange("area", {
+                  ...tempFilters.area,
+                  to: e.target.value.replace(/,/g, ""),
+                })
+              }
+              icon="მ²"
+              hasError={validationErrors.areaToError}
+            />
+          </div>
           {(validationErrors.areaFromError || validationErrors.areaToError) && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className=" text-red-500 text-sm mt-1">
               ჩაწერეთ ვალიდური მონაცემები
             </p>
           )}
@@ -621,7 +626,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("area", {
                   ...tempFilters.area,
-                  from: value.replace(/,/g, ""), 
+                  from: value.replace(/,/g, ""),
                 })
               }
             />
@@ -650,7 +655,7 @@ const FilterSection = () => {
       >
         <FilterInput
           value={tempFilters.bedrooms || ""}
-          placeholder="ოთახების რაოდენობა"
+          placeholder="ოთახები"
           onChange={(e) => {
             const value = parseInt(e.target.value, 10);
             handleTempFilterChange("bedrooms", isNaN(value) ? "" : value);

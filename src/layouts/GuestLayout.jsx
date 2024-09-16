@@ -8,12 +8,12 @@ const GuestLayout = ({ children }) => {
     <>
     <AgentModal/>
       <div className="max-w-[1920px] min-h-[1080px] bg-[#FFFFFF] flex flex-col">
-        <div className="px-[142px] border-b border-[#DBDBDB] py-[38px]">
+        <div className="px-[130px] border-b border-[#DBDBDB] py-[38px]">
           <Link to="/">
             <img src={RedberryIcon} alt="Redberry Logo" />
           </Link>
         </div>
-        <div className="px-[142px] py-[38px] w-full">{children}</div>
+        <div className="px-[130px] py-[38px] w-full">{children}</div>
       </div>
     </>
   );

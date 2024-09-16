@@ -6,7 +6,7 @@ const FilterInput = ({ value, placeholder, onChange, icon, hasError }) => (
       type="text"
       value={value}
       onChange={onChange}
-      className={`w-full px-3 py-2 outline-none pr-8 border ${
+      className={`w-[180px] px-3 py-2 outline-none pr-8 border ${
         hasError ? "border-red-500" : "border-gray-300"
       } rounded-md`}
       placeholder={placeholder}

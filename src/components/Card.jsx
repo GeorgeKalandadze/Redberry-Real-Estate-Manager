@@ -4,7 +4,7 @@ import BedIcon from "../assets/bed.png";
 import MailIndexIcon from "../assets/mail-index.png";
 import SpaceIcon from "../assets/space.png";
 
-const Card = ({ image, price, address, beds, area, mailIndex, label, isRental }) => {
+const Card = ({ image, price, address, beds, area, mailIndex, label, isRental, city }) => {
   const rentalLabel = isRental === 1 ? "ქირავდება" : "იყიდება";
   return (
     <div className="border rounded-lg overflow-hidden shadow-lg min-w-full">
@@ -22,7 +22,7 @@ const Card = ({ image, price, address, beds, area, mailIndex, label, isRental })
         <div className="text-[28px] font-bold text-black">{price} ₾</div>
         <div className="text-gray-600 text-[16px] flex items-center mb-3">
           <img src={LocationIcon} alt="Location" className="w-4 h-4 mr-2" />
-          <span>{address}</span>
+          <span>{city}, {address}</span>
         </div>
         <div className="flex  gap-6 text-[16px] items-center text-gray-600">
           <div className="flex items-center">
