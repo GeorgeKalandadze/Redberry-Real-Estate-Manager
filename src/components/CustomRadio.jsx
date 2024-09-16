@@ -11,7 +11,7 @@ const CustomRadio = ({ options, name, selectedValue, onChange, isValid }) => {
             name={name}
             value={option.value}
             checked={selectedValue === option.value}
-            onChange={() => onChange(name, option.value)} // Pass both name and value
+            onChange={() => onChange(name, option.value)} 
             className="hidden"
           />
           <span
