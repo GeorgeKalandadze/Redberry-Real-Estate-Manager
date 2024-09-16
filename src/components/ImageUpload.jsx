@@ -1,27 +1,23 @@
 import React from "react";
 import TrashIcon from "../assets/trash.png";
 
-const ImageUpload = ({ label, isValid, handleChange, values, handleImageDelete }) => {
-
-  
+const ImageUpload = ({
+  label,
+  isValid,
+  handleChange,
+  values,
+  handleImageDelete,
+}) => {
   const borderColor =
     isValid?.size === "invalid" || isValid?.type === "invalid"
       ? "border-red-500"
-      : "border-[#c3c2c8]";;
-
-  const backgroundColor =
-    isValid === "valid"
-      ? "bg-[#F8FFF8]"
-      : isValid === "invalid"
-      ? "bg-[#FAF2F3]"
-      : "";
-  
+      : "border-[#c3c2c8]";
 
   return (
     <div className="w-full flex flex-col gap-2">
       <label className="font-bold text-[14px]">{label}*</label>
       <div
-        className={`w-full h-[150px] ${borderColor}  border-dashed border-2 rounded-lg flex items-center justify-center relative`}
+        className={`w-full h-[150px] ${borderColor} border-dashed border-2 rounded-lg flex items-center justify-center relative`}
       >
         {!values ? (
           <>
@@ -57,6 +53,23 @@ const ImageUpload = ({ label, isValid, handleChange, values, handleImageDelete }
           </div>
         )}
       </div>
+
+      {/* Render appropriate error messages based on validation */}
+      {!values && isValid?.size === "invalid" && (
+        <p className="text-red-500 text-sm mt-1">
+          სურათი არ არის ატვირთული. გთხოვთ ატვირთოთ ფაილი.
+        </p>
+      )}
+      {isValid?.size === "invalid" && values && (
+        <p className="text-red-500 text-sm mt-1">
+          ფაილი ძალიან დიდია, მაქსიმალური ზომა 1MB.
+        </p>
+      )}
+      {isValid?.type === "invalid" && values && (
+        <p className="text-red-500 text-sm mt-1">
+          მხოლოდ JPG, JPEG, PNG ტიპის ფაილები დასაშვებია.
+        </p>
+      )}
     </div>
   );
 };

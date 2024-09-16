@@ -408,7 +408,6 @@ const FilterSection = () => {
   }, [filters]);
 
   const handleTempFilterChange = (filterKey, value) => {
-    // Remove commas from the value and parse it as a float
     const parsedValue = {
       from: value.from ? parseFloat(value.from.replace(/,/g, "")) : 0,
       to: value.to ? parseFloat(value.to.replace(/,/g, "")) : Infinity,
@@ -521,7 +520,7 @@ const FilterSection = () => {
             onChange={(e) =>
               handleTempFilterChange("price", {
                 ...tempFilters.price,
-                from: e.target.value.replace(/,/g, ""), // Remove commas from input
+                from: e.target.value.replace(/,/g, ""), 
               })
             }
             icon="₾"
@@ -533,7 +532,7 @@ const FilterSection = () => {
             onChange={(e) =>
               handleTempFilterChange("price", {
                 ...tempFilters.price,
-                to: e.target.value.replace(/,/g, ""), // Remove commas from input
+                to: e.target.value.replace(/,/g, ""), 
               })
             }
             icon="₾"
@@ -555,7 +554,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("price", {
                   ...tempFilters.price,
-                  from: value.replace(/,/g, ""), // Remove commas from static value
+                  from: value.replace(/,/g, ""), 
                 })
               }
             />
@@ -567,7 +566,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("price", {
                   ...tempFilters.price,
-                  to: value.replace(/,/g, ""), // Remove commas from static value
+                  to: value.replace(/,/g, ""), 
                 })
               }
             />
@@ -589,7 +588,7 @@ const FilterSection = () => {
             onChange={(e) =>
               handleTempFilterChange("area", {
                 ...tempFilters.area,
-                from: e.target.value.replace(/,/g, ""), // Remove commas from input
+                from: e.target.value.replace(/,/g, ""), 
               })
             }
             icon="მ²"
@@ -601,7 +600,7 @@ const FilterSection = () => {
             onChange={(e) =>
               handleTempFilterChange("area", {
                 ...tempFilters.area,
-                to: e.target.value.replace(/,/g, ""), // Remove commas from input
+                to: e.target.value.replace(/,/g, ""), 
               })
             }
             icon="მ²"
@@ -622,7 +621,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("area", {
                   ...tempFilters.area,
-                  from: value.replace(/,/g, ""), // Remove commas from static value
+                  from: value.replace(/,/g, ""), 
                 })
               }
             />
@@ -634,7 +633,7 @@ const FilterSection = () => {
               onSelect={(value) =>
                 handleTempFilterChange("area", {
                   ...tempFilters.area,
-                  to: value.replace(/,/g, ""), // Remove commas from static value
+                  to: value.replace(/,/g, ""),
                 })
               }
             />
