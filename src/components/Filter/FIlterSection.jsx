@@ -486,7 +486,7 @@ const FilterSection = () => {
   }, [openDropdown]);
 
   return (
-    <div className="flex py-2 gap-4 rounded-lg border-[#DBDBDB] border">
+    <div className="flex px-2 py-2 gap-4 rounded-lg border-[#DBDBDB] border">
       <FilterItem
         label="რეგიონი"
         isOpen={openDropdown === "location"}

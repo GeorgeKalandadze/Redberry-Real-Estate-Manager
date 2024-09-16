@@ -3,10 +3,10 @@ import ArrowDownIcon from "../../assets/arrow-down.png";
 
 const FilterItem = React.forwardRef(
   ({ label, children, isOpen, toggleOpen, applyFilters }, ref) => (
-    <div ref={ref} className="px-2 relative text-left">
+    <div ref={ref} className=" relative text-left">
       <button
         onClick={toggleOpen}
-        className={`flex gap-2 px-4 font-bold items-center py-2 rounded-md w-full transition-all ${
+        className={`flex gap-2 px-2 font-bold items-center py-2 rounded-md w-full transition-all ${
           isOpen ? "bg-gray-200 text-black" : "bg-white text-[#021526]"
         } hover:bg-gray-100`}
       >

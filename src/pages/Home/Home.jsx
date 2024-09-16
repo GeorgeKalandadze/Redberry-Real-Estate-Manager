@@ -11,13 +11,6 @@ const Home = () => {
   const { setIsAgentModalOpen, realEstateList, setFilters, filters } =
     useGlobalContext();
 
-  // const [filters, setFilters] = useSessionStorage("realEstateFilters", {
-  //   regions: [],
-  //   bedrooms: "",
-  //   price: { from: "", to: "" },
-  //   area: { from: "", to: "" },
-  // });
-
   const [filteredRealEstateList, setFilteredRealEstateList] =
     useState(realEstateList);
 
@@ -102,7 +95,9 @@ const Home = () => {
     <GuestLayout>
       <div className="w-full flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <FilterSection filters={filters} setFilters={setFilters} />
+          <div className="w-1/2">
+            <FilterSection filters={filters} setFilters={setFilters} />
+          </div>
           <div className="flex items-center gap-4">
             <Link
               to="/create-listing"
@@ -118,11 +113,13 @@ const Home = () => {
             </button>
           </div>
         </div>
-        <FilterSummary
-          filters={filters}
-          removeFilter={handleRemoveFilter}
-          clearAllFilters={clearAllFilters}
-        />
+        <div className="w-1/2">
+          <FilterSummary
+            filters={filters}
+            removeFilter={handleRemoveFilter}
+            clearAllFilters={clearAllFilters}
+          />
+        </div>
         {filteredRealEstateList.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredRealEstateList.map((property) => (

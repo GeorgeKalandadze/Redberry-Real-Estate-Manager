@@ -1,5 +1,6 @@
 import React from "react";
 import ClearIcon from "../assets/clear-icon.png";
+
 const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
   const formatPrice = (from, to) => {
     if (!from && !to) return "";
@@ -14,6 +15,14 @@ const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
     if (!to) return `${from} მ² +`;
     return `${from} მ² - ${to} მ²`;
   };
+
+  const hasActiveFilters =
+    filters.regions.length > 0 ||
+    filters.price?.from ||
+    filters.price?.to ||
+    filters.area?.from ||
+    filters.area?.to ||
+    filters.bedrooms;
 
   return (
     <div className="flex gap-4 items-center mb-4">
@@ -69,12 +78,14 @@ const FilterSummary = ({ filters, removeFilter, clearAllFilters }) => {
         </div>
       )}
 
-      <button
-        className="ml-4 text-[17px] font-semibold"
-        onClick={clearAllFilters}
-      >
-        გასუფთავება
-      </button>
+      {hasActiveFilters && (
+        <button
+          className="ml-4 text-[17px] font-semibold"
+          onClick={clearAllFilters}
+        >
+          გასუფთავება
+        </button>
+      )}
     </div>
   );
 };
