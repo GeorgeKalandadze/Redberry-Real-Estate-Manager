@@ -399,6 +399,10 @@ const FilterSection = () => {
     areaToError: false,
   });
   const dropdownRefs = useRef([]);
+  const [inputValues, setInputValues] = useState({
+    price: { from: "", to: "" },
+    area: { from: "", to: "" },
+  });
 
   const staticPrices = ["50,000", "100,000", "150,000", "200,000", "300,000"];
   const staticAreas = ["50,000", "100,000", "150,000", "200,000", "300,000"];
@@ -437,6 +441,52 @@ const FilterSection = () => {
 
     setTempFilters(newFilters);
   };
+
+  // const handleTempFilterChange = (filterKey, value) => {
+  //   // Parse values to numbers
+  //   const parsedValue = {
+  //     from: value.from ? parseFloat(value.from.replace(/,/g, "")) : 0,
+  //     to: value.to ? parseFloat(value.to.replace(/,/g, "")) : Infinity,
+  //   };
+
+  //   // Initialize error flags
+  //   let newErrors = { ...validationErrors };
+
+  //   // Validate based on filter key
+  //   if (filterKey === "area") {
+  //     const min = parsedValue.from;
+  //     const max = parsedValue.to;
+  //     if (min > max) {
+  //       newErrors.areaFromError = true;
+  //       newErrors.areaToError = true;
+  //     } else {
+  //       newErrors.areaFromError = false;
+  //       newErrors.areaToError = false;
+  //     }
+  //   }
+
+  //   if (filterKey === "price") {
+  //     const minPrice = parsedValue.from;
+  //     const maxPrice = parsedValue.to;
+  //     if (minPrice > maxPrice) {
+  //       newErrors.priceFromError = true;
+  //       newErrors.priceToError = true;
+  //     } else {
+  //       newErrors.priceFromError = false;
+  //       newErrors.priceToError = false;
+  //     }
+  //   }
+
+  //   // Update validation errors state
+  //   setValidationErrors(newErrors);
+
+  //   // Always update the temporary filters with current input values
+  //   setTempFilters((prevFilters) => ({
+  //     ...prevFilters,
+  //     [filterKey]: value,
+  //   }));
+  // };
+
 
   const handleRegionChange = (region) => {
     setTempFilters((prevFilters) => ({
@@ -498,7 +548,6 @@ const FilterSection = () => {
     };
   }, [openDropdown]);
 
-  console.log(dropdownRefs.current["area"]);
   
 
   return (
