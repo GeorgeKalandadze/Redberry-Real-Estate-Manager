@@ -391,7 +391,10 @@ import StaticValueList from "./StaticValueList";
 const FilterSection = () => {
   const { regions, filters, setFilters } = useGlobalContext();
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [tempFilters, setTempFilters] = useState(filters);
+  const [tempFilters, setTempFilters] = useState({
+    price: { from: "", to: "" },
+    area: { from: "", to: "" },
+  });
   const [validationErrors, setValidationErrors] = useState({
     priceFromError: false,
     priceToError: false,
@@ -442,51 +445,76 @@ const FilterSection = () => {
     setTempFilters(newFilters);
   };
 
-  // const handleTempFilterChange = (filterKey, value) => {
-  //   // Parse values to numbers
-  //   const parsedValue = {
-  //     from: value.from ? parseFloat(value.from.replace(/,/g, "")) : 0,
-  //     to: value.to ? parseFloat(value.to.replace(/,/g, "")) : Infinity,
-  //   };
+  const validateFilters = () => {
+    return !(
+      validationErrors.priceFromError ||
+      validationErrors.priceToError ||
+      validationErrors.areaFromError ||
+      validationErrors.areaToError
+    );
+  };
 
-  //   // Initialize error flags
-  //   let newErrors = { ...validationErrors };
+  const applyTempFilters = (currentTarget) => {
+    const isPriceDropdownOpen = dropdownRefs.current["price"]?.contains(
+      document.activeElement
+    );
+    const isAreaDropdownOpen = dropdownRefs.current["area"]?.contains(
+      document.activeElement
+    );
 
-  //   // Validate based on filter key
-  //   if (filterKey === "area") {
-  //     const min = parsedValue.from;
-  //     const max = parsedValue.to;
-  //     if (min > max) {
-  //       newErrors.areaFromError = true;
-  //       newErrors.areaToError = true;
-  //     } else {
-  //       newErrors.areaFromError = false;
-  //       newErrors.areaToError = false;
-  //     }
-  //   }
+    if (
+      (isPriceDropdownOpen &&
+        (validationErrors.priceFromError || validationErrors.priceToError)) ||
+      (isAreaDropdownOpen &&
+        (validationErrors.areaFromError || validationErrors.areaToError))
+    ) {
+      return;
+    }
 
-  //   if (filterKey === "price") {
-  //     const minPrice = parsedValue.from;
-  //     const maxPrice = parsedValue.to;
-  //     if (minPrice > maxPrice) {
-  //       newErrors.priceFromError = true;
-  //       newErrors.priceToError = true;
-  //     } else {
-  //       newErrors.priceFromError = false;
-  //       newErrors.priceToError = false;
-  //     }
-  //   }
+    const newFilters = { ...filters };
 
-  //   // Update validation errors state
-  //   setValidationErrors(newErrors);
+    console.log(tempFilters);
+    
+    if (currentTarget) {
+      newFilters[currentTarget] = validateFilterValues(
+        tempFilters[currentTarget],
+        currentTarget
+      );
+    }
 
-  //   // Always update the temporary filters with current input values
-  //   setTempFilters((prevFilters) => ({
-  //     ...prevFilters,
-  //     [filterKey]: value,
-  //   }));
-  // };
+    setFilters(newFilters);
+    setOpenDropdown(null);
+  };
 
+  const validateFilterValues = (values, filterType) => {
+    let validatedValues = values;
+
+    if (filterType === "price") {
+      const parsedPrice = {
+        from: values.from ? parseFloat(values.from.replace(/,/g, "")) : 0,
+        to: values.to ? parseFloat(values.to.replace(/,/g, "")) : Infinity,
+      };
+      if (parsedPrice.from <= parsedPrice.to) {
+        validatedValues = values;
+      } else {
+        validatedValues = { from: "", to: "" };
+      }
+    }
+
+    if (filterType === "area") {
+      const parsedArea = {
+        from: values.from ? parseFloat(values.from.replace(/,/g, "")) : 0,
+        to: values.to ? parseFloat(values.to.replace(/,/g, "")) : Infinity,
+      };
+      if (parsedArea.from <= parsedArea.to) {
+        validatedValues = values;
+      } else {
+        validatedValues = { from: "", to: "" };
+      }
+    }
+
+    return validatedValues;
+  };
 
   const handleRegionChange = (region) => {
     setTempFilters((prevFilters) => ({
@@ -496,33 +524,6 @@ const FilterSection = () => {
         : [...prevFilters.regions, region],
     }));
   };
-
-  const applyTempFilters = () => {
-    const isPriceDropdownOpen = dropdownRefs.current["price"]?.contains(
-      document.activeElement
-    );
-    const isAreaDropdownOpen = dropdownRefs.current["area"]?.contains(
-      document.activeElement
-    );
-
-    if (
-      isPriceDropdownOpen &&
-      (validationErrors.priceFromError || validationErrors.priceToError)
-    ) {
-      return;
-    }
-
-    if (
-      isAreaDropdownOpen &&
-      (validationErrors.areaFromError || validationErrors.areaToError)
-    ) {
-      return;
-    }
-
-    setFilters(tempFilters);
-    setOpenDropdown(null);
-  };
-
 
   const toggleDropdown = (dropdownName) => {
     if (openDropdown === dropdownName) {
@@ -557,14 +558,14 @@ const FilterSection = () => {
         isOpen={openDropdown === "location"}
         toggleOpen={() => toggleDropdown("location")}
         ref={(el) => (dropdownRefs.current["location"] = el)}
-        applyFilters={applyTempFilters}
+        applyFilters={() => applyTempFilters("regions")}
       >
         <div className="grid grid-cols-3 gap-8">
           {regions.map((region) => (
             <CustomCheckbox
               key={region.id}
               label={region.name}
-              checked={tempFilters.regions.includes(region.name)}
+              checked={tempFilters?.regions?.includes(region.name)}
               onChange={() => handleRegionChange(region.name)}
             />
           ))}
@@ -576,7 +577,7 @@ const FilterSection = () => {
         isOpen={openDropdown === "price"}
         toggleOpen={() => toggleDropdown("price")}
         ref={(el) => (dropdownRefs.current["price"] = el)}
-        applyFilters={applyTempFilters}
+        applyFilters={() => applyTempFilters("price")}
       >
         <div className="flex flex-col gap-2">
           <div className="flex gap-4">
@@ -647,7 +648,7 @@ const FilterSection = () => {
         isOpen={openDropdown === "area"}
         toggleOpen={() => toggleDropdown("area")}
         ref={(el) => (dropdownRefs.current["area"] = el)}
-        applyFilters={applyTempFilters}
+        applyFilters={() => applyTempFilters("area")}
       >
         <div className="flex flex-col gap-2">
           <div className="flex gap-4">
@@ -716,7 +717,7 @@ const FilterSection = () => {
         isOpen={openDropdown === "bedrooms"}
         toggleOpen={() => toggleDropdown("bedrooms")}
         ref={(el) => (dropdownRefs.current["bedrooms"] = el)}
-        applyFilters={applyTempFilters}
+        applyFilters={() => applyTempFilters("bedrooms")}
       >
         <FilterInput
           value={tempFilters.bedrooms || ""}
