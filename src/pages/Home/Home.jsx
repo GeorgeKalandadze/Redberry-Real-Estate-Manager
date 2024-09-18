@@ -6,7 +6,7 @@ import { useGlobalContext } from "../../contexts/Context";
 import { useSessionStorage } from "../../hooks/useSessionStorage"; 
 import FilterSummary from "../../components/FilterSummary";
 import FilterSection from "../../components/Filter/FIlterSection";
-
+import { motion } from "framer-motion";
 const Home = () => {
   const { setIsAgentModalOpen, realEstateList, setFilters, filters } =
     useGlobalContext();
@@ -91,59 +91,69 @@ const Home = () => {
     });
   };
 
+
+ 
+
+  const pageTransition = {
+    type: "tween",
+    ease: "anticipate",
+    duration: 0.5,
+  };
   
   
   return (
     <GuestLayout>
-      <div className="w-full flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <div className="w-1/2">
-            <FilterSection filters={filters} setFilters={setFilters} />
-          </div>
-          <div className="flex items-center gap-4">
-            <Link
-              to="/create-listing"
-              className="bg-[#F93B1D] hover:bg-[#DF3014] text-white text-[16px] font-medium px-6 py-4 rounded-xl transition duration-300 ease-in-out"
-            >
-              + ლისტინგის დამატება
-            </Link>
-            <button
-              onClick={() => setIsAgentModalOpen(true)}
-              className="text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl"
-            >
-              + აგენტის დამატება
-            </button>
-          </div>
-        </div>
-        <div className="w-1/2">
-          <FilterSummary
-            filters={filters}
-            removeFilter={handleRemoveFilter}
-            clearAllFilters={clearAllFilters}
-          />
-        </div>
-        {filteredRealEstateList.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredRealEstateList.map((property) => (
-              <Link to={`listing/${property.id}`} key={property.id}>
-                <Card
-                  image={property.image}
-                  price={property.price}
-                  address={property.address}
-                  beds={property.bedrooms}
-                  area={property.area}
-                  mailIndex={property.zip_code}
-                  label={property.label}
-                  isRental={property.is_rental}
-                  city={property?.city?.name}
-                />
+        <div className="w-full flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div className="w-1/2">
+              <FilterSection filters={filters} setFilters={setFilters} />
+            </div>
+            <div className="flex items-center gap-4">
+              <Link
+                to="/create-listing"
+                className="bg-[#F93B1D] hover:bg-[#DF3014] text-white text-[16px] font-medium px-6 py-4 rounded-xl transition duration-300 ease-in-out"
+              >
+                + ლისტინგის დამატება
               </Link>
-            ))}
+              <button
+                onClick={() => setIsAgentModalOpen(true)}
+                className="text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl"
+              >
+                + აგენტის დამატება
+              </button>
+            </div>
           </div>
-        ) : (
-          <p className="w-full">აღნიშნული მონაცემებით განცხადება არ იძებნება</p>
-        )}
-      </div>
+          <div className="w-1/2">
+            <FilterSummary
+              filters={filters}
+              removeFilter={handleRemoveFilter}
+              clearAllFilters={clearAllFilters}
+            />
+          </div>
+          {filteredRealEstateList.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {filteredRealEstateList.map((property) => (
+                <Link to={`listing/${property.id}`} key={property.id}>
+                  <Card
+                    image={property.image}
+                    price={property.price}
+                    address={property.address}
+                    beds={property.bedrooms}
+                    area={property.area}
+                    mailIndex={property.zip_code}
+                    label={property.label}
+                    isRental={property.is_rental}
+                    city={property?.city?.name}
+                  />
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="w-full">
+              აღნიშნული მონაცემებით განცხადება არ იძებნება
+            </p>
+          )}
+        </div>
     </GuestLayout>
   );
 };

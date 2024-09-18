@@ -26,7 +26,7 @@ const Listing = () => {
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  const {  realEstateList, fetchRealEstateList } =
+  const { realEstateList, fetchRealEstateList, setRealEstateList } =
     useGlobalContext();
 
     

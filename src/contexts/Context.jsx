@@ -146,15 +146,6 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // //handle image delete
-  // const handleImageDelete = (entity, setEntity, fieldName = "image") => {
-  //   const updatedEntity = { ...entity, [fieldName]: null };
-  //   setEntity(updatedEntity);
-  //   setValidationErrors((prevErrors) => ({
-  //     ...prevErrors,
-  //     [fieldName]: { size: "invalid", type: "invalid" },
-  //   }));
-  // };
 
   //handle image delete
   const handleImageDelete = (
@@ -214,6 +205,7 @@ export const AppProvider = ({ children }) => {
     }));
   };
 
+
   return (
     <AppContext.Provider
       value={{
@@ -240,7 +232,7 @@ export const AppProvider = ({ children }) => {
         fetchRealEstateList,
         fetchAgents,
         setFilters,
-        filters
+        filters,
       }}
     >
       {children}
