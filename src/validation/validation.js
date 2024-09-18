@@ -118,7 +118,7 @@ export const ValidateAgent = (values) => {
     },
   };
 
-  const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const REGEX_EMAIL = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@redberry\.ge$/;
   const REGEX_PHONE = /^5[0-9]{8}$/;
   const REGEX_IMAGE = /\.(jpeg|jpg|png)$/i;
 

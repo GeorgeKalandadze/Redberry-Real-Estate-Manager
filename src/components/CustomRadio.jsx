@@ -15,7 +15,7 @@ const CustomRadio = ({ options, name, selectedValue, onChange, isValid }) => {
             className="hidden"
           />
           <span
-            className={`w-4 h-4 rounded-full border-2 border-[#021526] flex items-center justify-center ${
+            className={`w-4 h-4 rounded-full border border-[#021526] flex items-center justify-center ${
               selectedValue === option.value ? "border-[#021526]" : ""
             }`}
           >
