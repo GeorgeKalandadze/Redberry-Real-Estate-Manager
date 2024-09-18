@@ -30,7 +30,9 @@ const Card = ({
         </span>
       </div>
       <div className="p-4 flex flex-col">
-        <div className="text-[28px] font-bold text-black">{price} ₾</div>
+        <div className="text-[20px] font-bold text-black 2xl:text-[28px]">
+          {price} ₾
+        </div>
         <div className="text-gray-600 text-[16px] flex items-center mb-3">
           <img src={LocationIcon} alt="Location" className="w-4 h-4 mr-2" />
           <span>

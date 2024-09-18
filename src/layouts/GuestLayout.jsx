@@ -9,13 +9,15 @@ const GuestLayout = ({ children }) => {
     <>
       <AgentModal />
       <AnimatePresence>
-        <div className="max-w-[1920px] min-h-[1080px] bg-[#FFFFFF] flex flex-col">
-          <div className="px-[130px] border-b border-[#DBDBDB] py-[38px]">
+        <div className="max-w-[1920px] min-h-[1080px] bg-[#FFFFFF] flex flex-col ">
+          <div className="px-[60px] border-b border-[#DBDBDB] py-[38px] 2xl:px-[130px]">
             <Link to="/">
               <img src={RedberryIcon} alt="Redberry Logo" />
             </Link>
           </div>
-          <div className="px-[130px] py-[38px] w-full">{children}</div>
+          <div className="px-[30px] xl:px-[60px] 2xl:px-[130px] py-[38px] w-full">
+            {children}
+          </div>
         </div>
       </AnimatePresence>
     </>

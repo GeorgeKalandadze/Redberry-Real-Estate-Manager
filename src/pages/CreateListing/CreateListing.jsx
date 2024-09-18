@@ -110,8 +110,8 @@ const CreateListing = () => {
     <GuestLayout>
       <div className="flex justify-center">
         <div className="w-[790px] flex gap-8 flex-col items-center">
-          <h1 className="text-[32px] font-bold ">ლისტინგის დამატება</h1>
-          <form className="w-full flex flex-col gap-16" onSubmit={handleSubmit}>
+          <h1 className="text-[20px] font-bold md:text-[32px]">ლისტინგის დამატება</h1>
+          <form className="w-full flex flex-col gap-8 md:gap-16" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2">
               <h2 className="text-[16px] font-bold">გარიგების ტიპი</h2>
               <CustomRadio
@@ -170,7 +170,7 @@ const CreateListing = () => {
 
             <div className="flex flex-col gap-4">
               <h2 className="text-[16px] font-bold">მდებარეობა</h2>
-              <div className="w-full flex gap-6">
+              <div className="w-full flex flex-col gap-6 md:flex-row">
                 <InputGroup
                   label="მისამართი"
                   type="text"
@@ -194,7 +194,7 @@ const CreateListing = () => {
                   isValid={validationErrors?.zip_code}
                 />
               </div>
-              <div className="w-full flex gap-6">
+              <div className="w-full flex flex-col gap-6 md:flex-row">
                 <CustomSelect
                   label="რეგიონი *"
                   options={regions?.map((region) => ({
@@ -223,7 +223,7 @@ const CreateListing = () => {
 
             <div className="flex flex-col gap-4">
               <h2 className="text-[16px] font-bold">ბინის დეტალები</h2>
-              <div className="w-full flex gap-6">
+              <div className="w-full flex flex-col gap-6 md:flex-row">
                 <InputGroup
                   label="ფასი"
                   type="text"
@@ -247,7 +247,7 @@ const CreateListing = () => {
                   isValid={validationErrors?.area}
                 />
               </div>
-              <div className="w-1/2 flex pr-4">
+              <div className="w-full flex md:w-1/2 md:pr-4">
                 <InputGroup
                   label="საძინებლების რაოდენობა"
                   type="text"
@@ -294,7 +294,7 @@ const CreateListing = () => {
               />
             </div>
 
-            <div className="w-1/2 flex pr-4 flex-col gap-4">
+            <div className="w-full flex flex-col gap-4 md:w-1/2 md:pr-4">
               <h2 className="text-[16px] font-bold">აგენტი</h2>
               <CustomSelect
                 label="აირჩიე"
@@ -308,7 +308,7 @@ const CreateListing = () => {
                 isValid={validationErrors?.agent_id}
               />
             </div>
-            <div className="flex justify-end items-center gap-4">
+            <div className="flex flex-col justify-end items-center gap-4 md:flex-row">
               <button
                 type="button"
                 className=" text-[#F93B1D] border border-[#F93B1D] text-[16px] font-medium px-6 py-4 rounded-xl"

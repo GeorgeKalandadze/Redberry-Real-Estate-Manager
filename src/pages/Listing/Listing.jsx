@@ -4,7 +4,6 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import { FreeMode } from "swiper/modules";
 import GuestLayout from "../../layouts/GuestLayout";
-import RandomImg from "../../assets/random-img.jpg";
 import LocationIcon from "../../assets/location.png";
 import BedIcon from "../../assets/bed.png";
 import MailIndexIcon from "../../assets/mail-index.png";

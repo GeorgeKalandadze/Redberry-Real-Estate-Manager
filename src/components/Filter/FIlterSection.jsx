@@ -552,7 +552,7 @@ const FilterSection = () => {
   
 
   return (
-    <div className="flex px-2 py-2 gap-4 rounded-lg border-[#DBDBDB] border">
+    <div className="flex px-2 py-2 gap-4 rounded-lg border-[#DBDBDB] border justify-between">
       <FilterItem
         label="რეგიონი"
         isOpen={openDropdown === "location"}
@@ -560,7 +560,7 @@ const FilterSection = () => {
         ref={(el) => (dropdownRefs.current["location"] = el)}
         applyFilters={() => applyTempFilters("regions")}
       >
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
           {regions.map((region) => (
             <CustomCheckbox
               key={region.id}
