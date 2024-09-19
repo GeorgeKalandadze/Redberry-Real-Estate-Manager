@@ -201,7 +201,7 @@ const Listing = () => {
 
           <div className="relative flex justify-center items-center py-8">
             <button
-              className="absolute left-[-50px] z-10  "
+              className="absolute left-[-50px] z-10 transition-transform transition-shadow duration-200 active:scale-95 active:shadow-pressed"
               onClick={goToPrevSlide}
             >
               <img src={ArrowIcon} alt="Previous" />
@@ -245,7 +245,7 @@ const Listing = () => {
               ))}
             </Swiper>
             <button
-              className="absolute right-[-50px] z-10 transform rotate-180"
+              className="absolute right-[-50px] rotate-180 z-10 transition-transform transition-shadow duration-200 active:scale-95 active:shadow-pressed"
               onClick={goToNextSlide}
             >
               <img src={ArrowIcon} alt="Next" />
