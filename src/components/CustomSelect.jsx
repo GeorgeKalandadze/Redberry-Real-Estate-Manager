@@ -2,8 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 import ArrowDownIcon from "../assets/arrow-down.png";
 import { useGlobalContext } from "../contexts/Context";
 
-const CustomSelect = ({ label, options, placeholder, onChange, value, isValid }) => {
-  const {setIsAgentModalOpen} = useGlobalContext();
+const CustomSelect = ({
+  label,
+  options,
+  placeholder,
+  onChange,
+  value,
+  isValid,
+}) => {
+  const { setIsAgentModalOpen } = useGlobalContext();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [selectedValue, setSelectedValue] = useState(
@@ -18,7 +25,7 @@ const CustomSelect = ({ label, options, placeholder, onChange, value, isValid })
     }
   }, [value, placeholder]);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const handleOptionClick = (option) => {
     setSelectedValue(option.label);
@@ -31,23 +38,20 @@ const CustomSelect = ({ label, options, placeholder, onChange, value, isValid })
       setIsOpen(false);
     }
   };
-  
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-   const dropdownStyles = {
-     borderColor:
-       isValid === "valid"
-         ? "#c3c2c8"
-         : isValid === "invalid"
-         ? "#F93B1D"
-         : "#c3c2c8",
-   };
-
-   
+  const dropdownStyles = {
+    borderColor:
+      isValid === "valid"
+        ? "#c3c2c8"
+        : isValid === "invalid"
+        ? "#F93B1D"
+        : "#c3c2c8",
+  };
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
@@ -77,33 +81,34 @@ const CustomSelect = ({ label, options, placeholder, onChange, value, isValid })
           opacity: isOpen ? "1" : "0",
         }}
       >
-        {options && options.length > 0 ? (
-          <ul className="divide-y divide-gray-300">
-            {placeholder === "აირჩიე აგენტი" && (
-              <li
-                className="px-4 py-2 text-black flex items-center gap-2 cursor-pointer"
-                onClick={() => setIsAgentModalOpen(true)}
-              >
-                <span className="rounded-full border border-black w-5 h-5 flex items-center justify-center">
-                  +
-                </span>
-                დაამატე აგენტი
-              </li>
-            )}
-
-            {options.map((option, index) => (
-              <li
-                key={index}
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleOptionClick(option)}
-              >
-                {option.label}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="px-4 py-2 text-gray-500">No options available.</div>
-        )}
+        <ul className="divide-y divide-gray-300">
+          {placeholder === "აირჩიე აგენტი" && (
+            <li
+              className="px-4 py-2 text-black flex items-center gap-2 cursor-pointer"
+              onClick={() => setIsAgentModalOpen(true)}
+            >
+              <span className="rounded-full border border-black w-5 h-5 flex items-center justify-center">
+                +
+              </span>
+              დაამატე აგენტი
+            </li>
+          )}
+          {options && options.length > 0
+            ? options.map((option, index) => (
+                <li
+                  key={index}
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option.label}
+                </li>
+              ))
+            : placeholder !== "აირჩიე აგენტი" && (
+                <div className="px-4 py-2 text-gray-500">
+                  No options available.
+                </div>
+              )}
+        </ul>
       </div>
     </div>
   );
