@@ -481,7 +481,7 @@ const FilterSection = () => {
         currentTarget
       );
     }
-
+    setValidationErrors({})
     setFilters(newFilters);
     setOpenDropdown(null);
   };
