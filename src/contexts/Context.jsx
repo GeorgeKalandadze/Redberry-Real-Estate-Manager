@@ -49,6 +49,8 @@ export const AppProvider = ({ children }) => {
   const [isAgentModalOpen, setIsAgentModalOpen] = useState(false);
   const [realEstateList, setRealEstateList] = useState([]);
 
+
+
   useEffect(() => {
     const fetchRegions = async () => {
       try {

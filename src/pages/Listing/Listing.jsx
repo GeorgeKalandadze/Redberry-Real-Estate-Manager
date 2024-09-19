@@ -25,14 +25,18 @@ const Listing = () => {
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  const { realEstateList, fetchRealEstateList, setRealEstateList } =
-    useGlobalContext();
+  const {
+    realEstateList,
+    fetchRealEstateList,
+    setRealEstateList,
+  } = useGlobalContext();
 
     
   useEffect(() => {
     const fetchListingDetails = async () => {
       try {
         const response = await axiosClient.get(`/real-estates/${id}`);
+        
         setListingDetails(response.data);
       } catch (error) {
         console.error("Error fetching listing details:", error);
@@ -48,8 +52,10 @@ const Listing = () => {
     try {
       const response = await axiosClient.delete(`/real-estates/${id}`);
       if (response.status === 200) {
-        fetchRealEstateList();
-        navigate("/"); 
+        setRealEstateList((prevList) => {
+          return prevList.filter((item) => item.id != id);
+        });
+        navigate("/");
       }
     } catch (error) {
       console.error(
@@ -57,7 +63,8 @@ const Listing = () => {
         error.response?.data || error
       );
     }
-  };  
+  };
+ 
 
   const goToNextSlide = () => {
     if (swiper !== null) {
