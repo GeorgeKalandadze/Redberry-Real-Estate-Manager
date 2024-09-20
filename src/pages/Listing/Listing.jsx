@@ -24,6 +24,7 @@ const Listing = () => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate();
   const {
     realEstateList,
@@ -44,13 +45,15 @@ const Listing = () => {
     };
 
     fetchListingDetails();
-  }, [id]);
+  }, []);
 
   
 
   const handleDeleteRealEstate = async (id) => {
+    setIsLoading(true);
     try {
       const response = await axiosClient.delete(`/real-estates/${id}`);
+      
       if (response.status === 200) {
         setRealEstateList((prevList) => {
           return prevList.filter((item) => item.id != id);
@@ -106,7 +109,7 @@ const Listing = () => {
 
   const rentalLabel = listingDetails?.is_rental === 1 ? "ქირავდება" : "იყიდება";
   
-if (!listingDetails) {
+if (!listingDetails || isLoading) {
   return (
     <div
       role="status"
