@@ -1,8 +1,22 @@
-# React + Vite
+# Redberry Bootcamp Real Estate Listing App
+This is a Redberry Bootcamp Real Estate Listing application where you can add listings, with various properties, and also delete them, this web application also has functionality to add an agent associated with a listing.
+### Used packages
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- **[Tailwind Css](https://tailwindcss.com/)**
+- **[Framer Motion](https://www.framer.com/motion/)**
+- **[Swiper js](https://swiperjs.com/)**
+- **[React Router DOM](https://reactrouter.com/en/main)**
+- **[Axios](https://axios-http.com/)**
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation & Setup
+```bash
+git clone https://github.com/GeorgeKalandadze/redberry-bootcamp-blog-app.git
+
+npm install
+
+npm run dev
+```
+
+## Production site link
+https://redberry-real-estate-manager.vercel.app/
